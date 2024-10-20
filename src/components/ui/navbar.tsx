@@ -3,7 +3,7 @@ import { MdOutlineEventNote } from 'react-icons/md';
 import { PiBowlFood } from 'react-icons/pi';
 import { TbHome, TbMapSearch } from 'react-icons/tb';
 import { NavLink } from 'react-router-dom';
-import { Sheet, SheetContent, SheetTrigger } from './sheet.tsx';
+import { Sheet, SheetClose, SheetContent, SheetTrigger } from './sheet.tsx';
 import { RiMenu3Line } from 'react-icons/ri';
 
 export default function Navbar() {
@@ -59,45 +59,55 @@ export default function Navbar() {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger>
-                <RiMenu3Line className='w-6 h-6 hover:text-green-500 focus:text-green-500'/>
+              <RiMenu3Line className="w-6 h-6 hover:text-green-500 focus:text-green-500" />
             </SheetTrigger>
             <SheetContent>
               <ul className="flex gap-8 text-md flex-col">
                 <li>
-                  <NavLink to={'/'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
-                    <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                      <TbHome />
-                      Beranda
-                    </div>
-                  </NavLink>
+                  <SheetClose asChild>
+                    <NavLink to={'/'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+                      <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
+                        <TbHome />
+                        Beranda
+                      </div>
+                    </NavLink>
+                  </SheetClose>
                 </li>
                 <li>
-                  <NavLink to={'/peta'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
-                    <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                      <TbMapSearch /> Peta
-                    </div>
-                  </NavLink>
+                  <SheetClose asChild>
+                    <NavLink to={'/peta'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+                      <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
+                        <TbMapSearch /> Peta
+                      </div>
+                    </NavLink>
+                  </SheetClose>
                 </li>
                 <li>
-                  <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
-                    <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                      <FaRoute /> Tempat Wisata
-                    </div>
-                  </NavLink>
+                  <SheetClose asChild>
+                    <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+                      <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
+                        <FaRoute /> Tempat Wisata
+                      </div>
+                    </NavLink>
+                  </SheetClose>
                 </li>
                 <li>
-                  <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
-                    <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                      <PiBowlFood /> Kuliner Khas
-                    </div>
-                  </NavLink>
+                  <SheetClose asChild>
+                    <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+                      <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
+                        <PiBowlFood /> Kuliner Khas
+                      </div>
+                    </NavLink>
+                  </SheetClose>
                 </li>
                 <li>
-                  <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
-                    <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                      <MdOutlineEventNote /> Acara
-                    </div>
-                  </NavLink>
+                  <SheetClose asChild>
+                    <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+                      <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
+                        <MdOutlineEventNote /> Acara
+                      </div>
+                    </NavLink>
+                  </SheetClose>
                 </li>
               </ul>
             </SheetContent>
