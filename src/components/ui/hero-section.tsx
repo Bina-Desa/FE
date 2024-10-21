@@ -39,7 +39,7 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white p-4 max-w-6xl mx-auto max-lg:mx-4 right-0 left-0 rounded-md mt-10 z-10 absolute" style={{ top: 'calc(100vh - 90px)' }}>
+      <div className="bg-white p-4 max-w-6xl mx-auto max-lg:mx-4 shadow-md right-0 left-0 rounded-md mt-10 z-10 absolute" style={{ top: 'calc(100vh - 90px)' }}>
         <iframe
           className="w-full rounded-sm aspect-video h-[500px] max-md:h-[300px]"
           src="https://www.youtube.com/embed/AugA9nZRgsI?si=3pedrqpClRc3w9vZ"
