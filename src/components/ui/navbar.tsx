@@ -40,14 +40,14 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+              <NavLink to={'/kuliner'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
                 <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
                   <PiBowlFood /> Kuliner Khas
                 </div>
               </NavLink>
             </li>
             <li>
-              <NavLink to={'/tempat-wisata'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+              <NavLink to={'/acara'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
                 <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
                   <MdOutlineEventNote /> Acara
                 </div>
