@@ -43,20 +43,20 @@ export default function PetaTempatWisata() {
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
           <DrawerContent>
             <DrawerHeader>
-              <div className="max-w-xl mx-auto px-4 text-left">
+              <div className="max-w-xl lg:max-w-7xl mx-auto px-4 text-left">
                 <DrawerTitle className="px-4">Informasi Wisata</DrawerTitle>
-                <ScrollArea className="h-[30rem] max-w-4xl mt-6 rounded-md px-4">
-                  <div className="">
+                <ScrollArea className="h-[30rem] lg:h-max lg:pb-14 max-w-4xl mt-6 rounded-md px-4 lg:flex-col lg:w-full ">
+                  <div className="lg:flex lg:gap-8 lg:items-center">
                     <div className="w-full">
                       <CarouselWrapper images={selectedTempat?.image} />
                     </div>
-                    <p className="mt-4 text-xs bg-green-500 px-4 py-1 rounded-full text-white w-max">{selectedTempat?.kategori}</p>
-                    <p className='text-xl font-bold mt-5  '>{selectedTempat?.nama}</p>
+                    <div className="w-full">
+                      <p className="mt-4 lg:mt-0 text-xs bg-green-500 px-4 py-1 rounded-full text-white w-max">{selectedTempat?.kategori}</p>
+                      <p className="text-xl font-bold mt-5 lg:mt-3 ">{selectedTempat?.nama}</p>
 
-                    <p className="mt-2 text-justify text-sm">{selectedTempat?.deskripsiPanjang}</p>
-                    <div>
+                      <p className="mt-2 text-justify text-sm">{selectedTempat?.deskripsiPanjang}</p>
                       <p className="font-bold text-lg mt-4">Fasilitas</p>
-                      <div className="flex flex-wrap gap-6 mt-4">
+                      <div className="flex flex-wrap gap-4 mt-4">
                         {selectedTempat?.fasilitas.map((fasilitas: string, index: number) => (
                           <p key={index} className="flex gap-2 items-center">
                             <FaCheckCircle className="text-green-500" /> {fasilitas}
