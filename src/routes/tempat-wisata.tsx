@@ -16,17 +16,17 @@ interface WisataAlam {
 export default function TempatWisata() {
   return (
     <div className="min-h-screen py-28">
-      <div className='text-center'>
+      <div className="text-center">
         <h1 className="text-center text-3xl font-bold">
           Tempat <span className="text-green-500">Wisata</span>
         </h1>
-        <p className='text-zinc-400'>Temukan berbagai tempat wisata yang menarik</p>
+        <p className="text-zinc-400">Temukan berbagai tempat wisata yang menarik</p>
       </div>
 
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
           {tempatWisata.map((wisata: WisataAlam, index: number) => (
-            <div key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative">
+            <a href="" key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
               <CarouselWrapper images={wisata.image} />
               <div className="">
                 <p className="font-bold text-lg mt-4">{wisata.nama}</p>
@@ -35,7 +35,7 @@ export default function TempatWisata() {
                   Lihat Maps <IoLocationOutline />
                 </a>
               </div>
-            </div>
+            </a>
           ))}
         </div>
       </div>
