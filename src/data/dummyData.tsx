@@ -55,3 +55,11 @@ export const tempatWisata = [
     "fasilitas": ["Kamar Mandi Umum", "Tempat makan", "Selfie Area", "Tempat Parkir"]
   }
 ];
+
+export const kuliner = [
+  {
+    nama:'',
+    kategori:'',
+    deskripsi:''
+  }
+]
