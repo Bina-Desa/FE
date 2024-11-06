@@ -1,7 +1,6 @@
 import { tempatWisata } from '@/data/dummyData';
 import { Helmet } from 'react-helmet';
 import HeroSection from './ui/hero-section';
-import { IoLocationOutline } from 'react-icons/io5';
 import { IoIosArrowForward } from 'react-icons/io';
 import CarouselWrapper from './ui/image-carousel';
 
@@ -41,7 +40,7 @@ export default function BerandaSection() {
                 <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                 <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
                 <a href={wisata.lokasi.gmaps} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                  Lihat Maps <IoLocationOutline />
+                  Lihat Detail <IoIosArrowForward />
                 </a>
               </div>
             </a>
