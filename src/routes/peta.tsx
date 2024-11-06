@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { FaCheckCircle } from 'react-icons/fa';
+import { LuExternalLink } from 'react-icons/lu';
 
 export default function PetaTempatWisata() {
   const defaultPosition: [number, number] = [-8.6924989, 116.1063038];
@@ -51,7 +52,12 @@ export default function PetaTempatWisata() {
                       <CarouselWrapper images={selectedTempat?.image} />
                     </div>
                     <div className="w-full">
-                      <p className="mt-4 lg:mt-0 text-xs bg-green-500 px-4 py-1 rounded-full text-white w-max">{selectedTempat?.kategori}</p>
+                      <div className="flex gap-2">
+                        <p className="mt-4 lg:mt-0 text-xs bg-green-500 px-4 py-1 rounded-full text-white w-max">{selectedTempat?.kategori}</p>
+                        <a href={selectedTempat?.lokasi.gmaps} className="bg-blue-500 rounded-full text-white w-max px-4 text-xs py-1 flex items-center gap-2">
+                          Lihat Google Maps <LuExternalLink />
+                        </a>
+                      </div>
                       <p className="text-xl font-bold mt-5 lg:mt-3 ">{selectedTempat?.nama}</p>
 
                       <p className="mt-2 text-justify text-sm">{selectedTempat?.deskripsiPanjang}</p>

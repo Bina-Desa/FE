@@ -32,7 +32,7 @@ export default function TempatWisata() {
                 <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                 <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
                 <a href={wisata.lokasi.gmaps} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                  Lihat Maps <IoLocationOutline />
+                  Lihat Detail <IoLocationOutline />
                 </a>
               </div>
             </a>
