@@ -28,7 +28,7 @@ export default function Navbar() {
             <li>
               <NavLink to={'/peta'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
                 <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                  <TbMapSearch /> Peta
+                  <TbMapSearch /> Peta Wisata
                 </div>
               </NavLink>
             </li>
