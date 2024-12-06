@@ -9,6 +9,7 @@ import { Helmet } from 'react-helmet';
 import { MapContainer, Marker, TileLayer } from 'react-leaflet';
 import { FaCheckCircle } from 'react-icons/fa';
 import { LuExternalLink } from 'react-icons/lu';
+import L from 'leaflet';
 
 export default function PetaTempatWisata() {
   const defaultPosition: [number, number] = [-8.6924989, 116.1063038];
@@ -19,6 +20,14 @@ export default function PetaTempatWisata() {
     setSelectedTempat(tempat);
     setDrawerOpen(true);
   };
+
+  const redIcon = new L.Icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
 
   return (
     <>
@@ -34,6 +43,7 @@ export default function PetaTempatWisata() {
             <Marker
               key={index}
               position={[parseFloat(tempat.lokasi.lat), parseFloat(tempat.lokasi.long)]}
+              icon={redIcon}
               eventHandlers={{
                 click: () => handleMarkerClick(tempat),
               }}
@@ -52,9 +62,9 @@ export default function PetaTempatWisata() {
                       <CarouselWrapper images={selectedTempat?.image} />
                     </div>
                     <div className="w-full">
-                      <div className="flex gap-2">
-                        <p className="mt-4 lg:mt-0 text-xs bg-green-500 px-4 py-1 rounded-full text-white w-max">{selectedTempat?.kategori}</p>
-                        <a href={selectedTempat?.lokasi.gmaps} className="bg-blue-500 rounded-full text-white w-max px-4 text-xs py-1 flex items-center gap-2">
+                      <div className="flex gap-2 mt-4">
+                        <p className="text-xs bg-green-500 px-4 py-2 rounded-full text-white w-max">{selectedTempat?.kategori}</p>
+                        <a href={selectedTempat?.lokasi.gmaps} className="bg-blue-500 hover:bg-blue-600 rounded-full text-white w-max px-4 text-xs flex items-center gap-2">
                           Lihat Google Maps <LuExternalLink />
                         </a>
                       </div>
