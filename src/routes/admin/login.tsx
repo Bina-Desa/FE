@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage: React.FC = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate(); // Untuk navigasi ke halaman lain
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault(); // Mencegah reload halaman
+
+    // Validasi username dan password
+    if (username === "admin" && password === "admin123") {
+      // Simpan token sederhana ke localStorage
+      // localStorage.setItem("authToken", "dummyToken");
+      // Arahkan ke admin dashboard
+      navigate("/adminDashboard");
+    } else {
+      // Tampilkan pesan error jika login gagal
+      setError("Invalid username or password");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg">
@@ -22,16 +43,21 @@ const LoginPage: React.FC = () => {
         </p>
 
         {/* Form */}
-        <form className="mt-6">
+        <form className="mt-6" onSubmit={handleLogin}>
           {/* Username */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-800" htmlFor="username">
+            <label
+              className="block text-sm font-medium text-gray-800"
+              htmlFor="username"
+            >
               Username
             </label>
             <input
               id="username"
               type="text"
               placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               className="w-full px-4 py-2 mt-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
@@ -39,17 +65,27 @@ const LoginPage: React.FC = () => {
 
           {/* Password */}
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-800" htmlFor="password">
+            <label
+              className="block text-sm font-medium text-gray-800"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
               id="password"
               type="password"
               placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full px-4 py-2 mt-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
               required
             />
           </div>
+
+          {/* Error Message */}
+          {error && (
+            <p className="mt-2 text-sm text-center text-red-500">{error}</p>
+          )}
 
           {/* Sign In Button */}
           <button
@@ -59,7 +95,6 @@ const LoginPage: React.FC = () => {
             Login
           </button>
         </form>
-
       </div>
     </div>
   );
