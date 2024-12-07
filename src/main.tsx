@@ -10,6 +10,7 @@ import Kuliner from './routes/kuliner.tsx';
 import Acara from './routes/acara.tsx';
 import LoginPage from './routes/admin/login.tsx';
 import AdminDashboard from './routes/admin/dashboard.tsx';
+import DetailWisata from './routes/detail-wisata.tsx';
 
 // Fungsi untuk mengecek apakah pengguna sudah login
 const isAuthenticated = () => {
