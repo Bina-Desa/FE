@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
 import './index.css';
 import Root from './routes/root.tsx';
 import Peta from './routes/peta.tsx';
@@ -10,6 +10,13 @@ import Kuliner from './routes/kuliner.tsx';
 import Acara from './routes/acara.tsx';
 import LoginPage from './routes/admin/login.tsx';
 import AdminDashboard from './routes/admin/dashboard.tsx';
+
+// Fungsi untuk mengecek apakah pengguna sudah login
+const isAuthenticated = () => {
+  const token = localStorage.getItem('authToken'); // Ganti sesuai kebutuhan
+  return !!token; // Mengembalikan true jika token ada
+};
+
 // Definisi router utama
 const router = createBrowserRouter([
   // PUBLIC ROUTES
@@ -30,9 +37,9 @@ const router = createBrowserRouter([
     element: <LoginPage />,
   },
   {
-    path :'/adminDashboard',
-    element : <AdminDashboard />
-  }
+    path: '/adminDashboard',
+    element: isAuthenticated() ? <AdminDashboard /> : <Navigate to="/login" replace />,
+  },
 ]);
 
 createRoot(document.getElementById('root')!).render(
