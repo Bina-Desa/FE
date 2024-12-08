@@ -3,6 +3,7 @@ import CarouselWrapper from '@/components/ui/image-carousel';
 import { IoLocationOutline } from 'react-icons/io5';
 
 interface WisataAlam {
+  id: number;
   nama: string;
   lokasi: {
     lat: string;
@@ -26,12 +27,12 @@ export default function TempatWisata() {
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
           {tempatWisata.map((wisata: WisataAlam, index: number) => (
-            <a href="" key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+            <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
               <CarouselWrapper images={wisata.image} />
               <div className="">
                 <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                 <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                <a href={wisata.lokasi.gmaps} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
+                <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
                   Lihat Detail <IoLocationOutline />
                 </a>
               </div>
