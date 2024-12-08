@@ -6,6 +6,7 @@ interface Menu {
     namaMenu: string;
     category: string;
     gambar: string;
+    harga: number;
     id_warung: number;
 }
 
@@ -16,26 +17,29 @@ interface MenuDialogProps {
 
 const MenuDialog: React.FC<MenuDialogProps> = ({ idWarung, onClose }) => {
     const [menus, setMenus] = useState<Menu[]>([
-        { 
-            id: 1, 
-            namaMenu: 'Sate Ayam', 
-            category: 'Makanan', 
-            gambar: '/placeholder-image.jpg', 
-            id_warung: 1 
+        {
+            id: 1,
+            namaMenu: 'Sate Ayam',
+            category: 'Makanan',
+            gambar: '/placeholder-image.jpg',
+            harga: 20000,
+            id_warung: 1
         },
-        { 
-            id: 2, 
-            namaMenu: 'Sate Kambing', 
-            category: 'Makanan', 
-            gambar: '/placeholder-image.jpg', 
-            id_warung: 1 
+        {
+            id: 2,
+            namaMenu: 'Sate Kambing',
+            category: 'Makanan',
+            gambar: '/placeholder-image.jpg',
+            harga: 30000,
+            id_warung: 1
         },
-        { 
-            id: 3, 
-            namaMenu: 'Bakso Spesial', 
-            category: 'Makanan', 
-            gambar: '/placeholder-image.jpg', 
-            id_warung: 2 
+        {
+            id: 3,
+            namaMenu: 'Bakso Spesial',
+            category: 'Makanan',
+            gambar: '/placeholder-image.jpg',
+            harga: 25000,
+            id_warung: 2
         }
     ].filter(menu => menu.id_warung === idWarung));
 
@@ -65,12 +69,13 @@ const MenuDialog: React.FC<MenuDialogProps> = ({ idWarung, onClose }) => {
     };
 
     const openEditDialog = (menu?: Menu) => {
-        setCurrentMenu(menu || { 
-            id: 0, 
-            namaMenu: '', 
-            category: '', 
-            gambar: '', 
-            id_warung: idWarung 
+        setCurrentMenu(menu || {
+            id: 0,
+            namaMenu: '',
+            category: '',
+            gambar: '',
+            harga: 0,
+            id_warung: idWarung
         });
         setIsEditDialogOpen(true);
     };
@@ -104,6 +109,7 @@ const MenuDialog: React.FC<MenuDialogProps> = ({ idWarung, onClose }) => {
                                     <th className="px-4 py-3 text-left">Nama Menu</th>
                                     <th className="px-4 py-3 text-left">Kategori</th>
                                     <th className="px-4 py-3 text-left">Gambar</th>
+                                    <th className="px-4 py-3 text-left">Harga</th>
                                     <th className="px-4 py-3 text-center">Aksi</th>
                                 </tr>
                             </thead>
@@ -114,12 +120,13 @@ const MenuDialog: React.FC<MenuDialogProps> = ({ idWarung, onClose }) => {
                                         <td className="px-4 py-3">{menu.namaMenu}</td>
                                         <td className="px-4 py-3">{menu.category}</td>
                                         <td className="px-4 py-3">
-                                            <img 
-                                                src={menu.gambar} 
-                                                alt={menu.namaMenu} 
+                                            <img
+                                                src={menu.gambar}
+                                                alt={menu.namaMenu}
                                                 className="w-16 h-16 object-cover rounded"
                                             />
                                         </td>
+                                        <td className="px-4 py-3">{menu.harga.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' })}</td>
                                         <td className="px-4 py-3 flex justify-center space-x-2">
                                             <button
                                                 onClick={() => openEditDialog(menu)}
@@ -187,18 +194,33 @@ const MenuDialog: React.FC<MenuDialogProps> = ({ idWarung, onClose }) => {
                                     />
                                 </div>
                                 <div>
+                                    <label htmlFor="harga" className="block mb-2">
+                                        Harga
+                                    </label>
+                                    <input
+                                        id="harga"
+                                        type="number"
+                                        value={currentMenu?.harga || ''}
+                                        onChange={(e) => setCurrentMenu({
+                                            ...currentMenu!,
+                                            harga: Number(e.target.value)
+                                        })}
+                                        className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    />
+                                </div>
+                                <div>
                                     <label htmlFor="gambar" className="block mb-2">
                                         Gambar
                                     </label>
                                     <div className="flex items-center gap-4">
                                         {currentMenu?.gambar && (
-                                            <img 
-                                                src={currentMenu.gambar} 
-                                                alt="Menu" 
+                                            <img
+                                                src={currentMenu.gambar}
+                                                alt="Menu"
                                                 className="w-24 h-24 object-cover rounded"
                                             />
                                         )}
-                                        <button 
+                                        <button
                                             className="flex items-center gap-2 bg-gray-200 px-4 py-2 rounded hover:bg-gray-300"
                                         >
                                             <Camera size={20} /> Unggah Gambar
