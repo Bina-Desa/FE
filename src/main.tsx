@@ -12,6 +12,7 @@ import LoginPage from './routes/admin/login.tsx';
 import AdminDashboard from './routes/admin/dashboard.tsx';
 import DetailWisata from './routes/detail-wisata.tsx';
 import DetailKuliner from './routes/detail-kuliner.tsx';
+import DetailAcara from './routes/detail-acara.tsx';
 // Fungsi untuk mengecek apakah pengguna sudah login
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken'); // Ganti sesuai kebutuhan
@@ -31,6 +32,9 @@ const router = createBrowserRouter([
       { path: 'kuliner', element: <Kuliner /> },
       {path : 'kuliner/:id', element:<DetailKuliner/>},
       { path: 'acara', element: <Acara /> },
+      { path: 'acara/:id', element: <DetailAcara /> },
+
+
     ],
   },
 

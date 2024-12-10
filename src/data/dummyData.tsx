@@ -111,3 +111,30 @@ export const kuliner = [
     ],
   },
 ];
+
+export const acaraList = [
+  {
+    id: 1,
+    image: 'https://tse2.mm.bing.net/th?id=OIP.Ekl197qoAhYZ6Bl8impwAgHaEK&pid=Api&P=0&h=220',
+    title: 'Festival Seni Kebon Ayu',
+    description: 'Sebuah festival seni tradisional yang menampilkan budaya lokal.',
+    eventDate: '2024-12-20',
+    location: 'Lapangan Desa Kebon Ayu',
+  },
+  {
+    id: 2,
+    image: 'https://tse2.mm.bing.net/th?id=OIP.Ekl197qoAhYZ6Bl8impwAgHaEK&pid=Api&P=0&h=220',
+    title: 'Pasar Rakyat',
+    description: 'Nikmati pengalaman berbelanja produk lokal dan tradisional.',
+    eventDate: '2024-12-25',
+    location: 'Pasar Umum Kebon Ayu',
+  },
+  {
+    id: 3,
+    image: 'https://tse2.mm.bing.net/th?id=OIP.Ekl197qoAhYZ6Bl8impwAgHaEK&pid=Api&P=0&h=220',
+    title: 'Workshop Anyaman',
+    description: 'Pelajari seni membuat anyaman khas Kebon Ayu.',
+    eventDate: '2024-12-30',
+    location: 'Balai Desa Kebon Ayu',
+  },
+];
