@@ -13,7 +13,7 @@ const LoginPage: React.FC = () => {
     // Validasi username dan password
     if (username === "admin" && password === "admin123") {
       // Simpan token sederhana ke localStorage
-      // localStorage.setItem("authToken", "dummyToken");
+      localStorage.setItem("authToken", "dummyToken");
       // Arahkan ke admin dashboard
       navigate("/adminDashboard");
     } else {
