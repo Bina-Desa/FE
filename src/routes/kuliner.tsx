@@ -12,7 +12,7 @@ export default function Kuliner() {
       </div>
 
       <div>
-        <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
           {kuliner.map((warung) => (
             <div
               key={warung.id}

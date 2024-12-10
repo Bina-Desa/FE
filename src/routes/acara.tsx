@@ -12,7 +12,7 @@ export default function Acara() {
       </div>
 
       <div>
-        <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
           {acaraList.map((acara) => (
             <div
               key={acara.id}
@@ -27,16 +27,16 @@ export default function Acara() {
                 {/* Membatasi title menjadi 1 baris */}
                 <h2 className="text-lg font-semibold text-gray-800 truncate">{acara.title}</h2>
                 
-                {/* Membatasi deskripsi menjadi 3 baris */}
-                <p className="text-sm text-gray-600 mt-2 line-clamp-3">{acara.description}</p>
+                {/* Membatasi deskripsi menjadi 1 baris dan tidak wrap */}
+                <p className="text-sm text-gray-600 mt-2 truncate">{acara.description}</p>
                 
-                {/* Tanggal Acara */}
-                <p className="text-sm text-gray-500 mt-2">
+                {/* Tanggal Acara tetap 1 baris */}
+                <p className="text-sm text-gray-500 mt-2 truncate">
                   Tanggal: {new Date(acara.eventDate).toLocaleDateString('id-ID')}
                 </p>
 
-                {/* Lokasi Acara */}
-                <p className="text-sm text-gray-500 mt-2">
+                {/* Lokasi Acara tetap 1 baris */}
+                <p className="text-sm text-gray-500 mt-2 truncate">
                   Lokasi: {acara.location}
                 </p>
 
