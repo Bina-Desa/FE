@@ -1,7 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { acaraList } from '@/data/dummyData';
 import { FiCalendar, FiMapPin } from 'react-icons/fi';
-import { IoCheckmarkCircleSharp } from 'react-icons/io5';
 
 export default function DetailAcara() {
   const { id = '0' } = useParams<{ id: string }>();
