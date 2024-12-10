@@ -52,8 +52,62 @@ export const tempatWisata = [
 export const kuliner = [
   {
     id: 1,
-    nama: '',
-    kategori: '',
-    deskripsi: '',
+    nama_warung: 'Warung Makan Sederhana',
+    gambar_warung: 'https://tse4.mm.bing.net/th?id=OIP.uh1BigYywwkzwqwUCQi6JgHaFQ&pid=Api&P=0&h=220',
+    kategori: 'Indonesian',
+    deskripsi: 'Menyediakan masakan khas Indonesia dengan cita rasa yang autentik.',
+    menu: [
+      ['Nasi Goreng', '15000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Mie Goreng', '13000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Ayam Bakar', '20000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+    ],
+  },
+  {
+    id: 2,
+    nama_warung: 'Warung Lezat',
+    gambar_warung: 'https://tse4.mm.bing.net/th?id=OIP.uh1BigYywwkzwqwUCQi6JgHaFQ&pid=Api&P=0&h=220',
+    kategori: 'Seafood',
+    deskripsi: 'Warung spesialis seafood segar dengan berbagai pilihan menu.',
+    menu: [
+      ['Ikan Bakar', '30000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Udang Saus Tiram', '35000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Cumi Goreng Tepung', '25000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+    ],
+  },
+  {
+    id: 3,
+    nama_warung: 'Kafe Modern',
+    gambar_warung: 'https://tse4.mm.bing.net/th?id=OIP.uh1BigYywwkzwqwUCQi6JgHaFQ&pid=Api&P=0&h=220',
+    kategori: 'Western',
+    deskripsi: 'Kafe modern dengan suasana cozy dan menu khas western.',
+    menu: [
+      ['Spaghetti Carbonara', '40000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Steak Sapi', '60000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Chicken Burger', '25000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+    ],
+  },
+  {
+    id: 4,
+    nama_warung: 'Warung Ayam Goreng',
+    gambar_warung: 'https://tse4.mm.bing.net/th?id=OIP.uh1BigYywwkzwqwUCQi6JgHaFQ&pid=Api&P=0&h=220',
+    kategori: 'Fast Food',
+    deskripsi: 'Menyediakan berbagai menu ayam goreng dengan rasa yang renyah.',
+    menu: [
+      ['Ayam Goreng Original', '22000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Ayam Goreng Pedas', '23000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Paket Nasi Ayam', '27000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+    ],
+  },
+  {
+    id: 5,
+    nama_warung: 'Kedai Kopi Nikmat',
+    gambar_warung: 'https://tse4.mm.bing.net/th?id=OIP.uh1BigYywwkzwqwUCQi6JgHaFQ&pid=Api&P=0&h=220',
+    kategori: 'Cafe',
+    deskripsi: 'Kedai kopi dengan berbagai pilihan minuman dan cemilan ringan.',
+    menu: [
+      ['Kopi Hitam', '10000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Latte', '20000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+      ['Cappuccino', '25000', 'https://tse1.mm.bing.net/th?id=OIP.b881ovKeRrqYdJ8vkCdqBgAAAA&pid=Api&P=0&h=220'],
+    ],
   },
 ];

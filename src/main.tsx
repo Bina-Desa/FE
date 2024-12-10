@@ -11,7 +11,7 @@ import Acara from './routes/acara.tsx';
 import LoginPage from './routes/admin/login.tsx';
 import AdminDashboard from './routes/admin/dashboard.tsx';
 import DetailWisata from './routes/detail-wisata.tsx';
-
+import DetailKuliner from './routes/detail-kuliner.tsx';
 // Fungsi untuk mengecek apakah pengguna sudah login
 const isAuthenticated = () => {
   const token = localStorage.getItem('authToken'); // Ganti sesuai kebutuhan
@@ -29,6 +29,7 @@ const router = createBrowserRouter([
       { path: 'tempat-wisata', element: <TempatWisata /> },
       { path: 'tempat-wisata/:id', element: <DetailWisata /> },
       { path: 'kuliner', element: <Kuliner /> },
+      {path : 'kuliner/:id', element:<DetailKuliner/>},
       { path: 'acara', element: <Acara /> },
     ],
   },

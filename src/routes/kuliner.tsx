@@ -1,41 +1,43 @@
-import { tempatWisata } from '@/data/dummyData';
-import CarouselWrapper from '@/components/ui/image-carousel';
-import { IoLocationOutline } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
+import { kuliner } from '@/data/dummyData';
 
-interface WisataAlam {
-  nama: string;
-  lokasi: {
-    lat: string;
-    long: string;
-    gmaps: string;
-  };
-  deskripsiPendek: string;
-  image: string[];
-}
-
-export default function kuliner() {
+export default function Kuliner() {
   return (
-    <div className="min-h-screen py-28">
+    <div className="min-h-screen py-28 bg-gray-100">
       <div className="text-center">
-        <h1 className="text-center text-3xl font-bold">
+        <h1 className="text-center text-3xl font-bold text-gray-800">
           Kuliner <span className="text-green-500">Kebon Ayu</span>
         </h1>
-        <p className="text-zinc-400">Temukan berbagai tempat kuliner yang lezat</p>
+        <p className="text-zinc-500">Temukan berbagai tempat kuliner yang lezat</p>
       </div>
 
       <div>
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {tempatWisata.map((wisata: WisataAlam, index: number) => (
-            <a href="" key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-              <CarouselWrapper images={wisata.image} />
-              <div className="">
-                <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                <a href={wisata.lokasi.gmaps} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                  Lihat Detail <IoLocationOutline />
-                </a>
+        <div className="grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
+          {kuliner.map((warung) => (
+            <div
+              key={warung.id}
+              className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:-translate-y-2 hover:shadow-xl"
+            >
+              <img
+                src={warung.gambar_warung}
+                alt={`Gambar ${warung.nama_warung}`}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-5">
+                {/* Membatasi title menjadi 1 baris */}
+                <h2 className="text-lg font-semibold text-gray-800 truncate">{warung.nama_warung}</h2>
+                
+                {/* Membatasi deskripsi menjadi 3 baris */}
+                <p className="text-sm text-gray-600 mt-2 line-clamp-3">{warung.deskripsi}</p>
+                
+                <Link
+                  to={`/kuliner/${warung.id}`}
+                  className="mt-4 inline-block bg-green-500 text-white text-sm font-medium px-6 py-2 rounded-md hover:bg-green-600"
+                >
+                  Lihat Menu
+                </Link>
               </div>
-            </a>
+            </div>
           ))}
         </div>
       </div>

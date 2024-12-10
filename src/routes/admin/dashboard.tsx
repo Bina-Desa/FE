@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Home, MapPin, Utensils, Users } from 'lucide-react';
-import DestinationsPage from './destinations';
 import AdminKulinerPage from './kuliner';
+import Destinasi from './adminDestinations';
 const AdminDashboard: React.FC = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
 
@@ -65,7 +65,7 @@ const AdminDashboard: React.FC = () => {
         {/* Placeholder for content based on selected menu */}
         <div className="bg-white p-6 rounded-lg shadow">
           {activeMenu === 'dashboard' && <p>Dashboard content goes here</p>}
-          {activeMenu === 'destinations' && <DestinationsPage />}
+          {activeMenu === 'destinations' && <Destinasi />}
           {activeMenu === 'culinary' && <AdminKulinerPage />}
           {activeMenu === 'management' && <p>Pengurus Desa content goes here</p>}
         </div>
