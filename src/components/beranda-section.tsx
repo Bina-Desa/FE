@@ -30,7 +30,7 @@ export default function BerandaSection() {
           <h1 className="text-4xl font-bold">
             Tempat <span className="text-green-500">Wisata</span>
           </h1>
-          <p className="text-zinc-400">Temukan berbagai tempat yang menarik</p>
+          <p className="text-zinc-500">Temukan berbagai tempat yang menarik</p>
         </div>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
@@ -58,7 +58,7 @@ export default function BerandaSection() {
           <h1 className="text-4xl font-bold">
             Kuliner <span className="text-green-500">Khas</span>
           </h1>
-          <p className="text-zinc-400">Temukan berbagai makanan lezat</p>
+          <p className="text-zinc-500">Temukan berbagai makanan yang lezat</p>
         </div>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">

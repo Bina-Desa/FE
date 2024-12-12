@@ -11,15 +11,15 @@ const HeroSection = () => {
         backgroundImage: "url('/images/header.jpg')",
       }}
     >
-      <div className="absolute inset-0 bg-black opacity-60"></div>
+      <div className="absolute inset-0 bg-black opacity-70"></div>
 
       <div className="relative z-10 flex justify-center items-center min-h-screen text-white">
         <div className="text-center md:mt-14 mx-4">
           <a href="/kuliner" className="border-muted-foreground border rounded-full px-4 py-1 text-sm text-zinc-300 mb-5 flex items-center w-max justify-center mx-auto group">
             Temukan berbagai<span className="font-bold ms-1 text-white">Kuliner Khas</span> <IoIosArrowForward className="group-hover:ms-2 transition-all duration-200" />
           </a>
-          <h1 className="text-6xl max-sm:text-5xl font-bold mt-6 mb-8 leading-snug">
-            Desa Wisata <span className="text-green-500 underline decoration-wavy decoration-white underline-offset-[16px]">Kebon Ayu</span>
+          <h1 className="text-6xl max-sm:text-5xl font-bold mt-6 mb-3 leading-snug">
+            Desa Wisata <span className="text-green-500">Kebon Ayu</span>
           </h1>
           <p className="mb-8">Temukan berbagai macam tempat wisata dan kuliner khas</p>
           <div className="flex gap-4 justify-center">
