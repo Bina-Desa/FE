@@ -66,10 +66,10 @@ export default function Navbar() {
               </NavLink>
             </li>
             <li>
-              <NavLink to={'/tentang'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+              <NavLink to={'/profil'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
                 <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
                   <PiWarningCircle />
-                  Tentang
+                  Profil
                 </div>
               </NavLink>
             </li>
@@ -131,9 +131,9 @@ export default function Navbar() {
                 </li>
                 <li>
                   <SheetClose asChild>
-                    <NavLink to={'/tentang'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
+                    <NavLink to={'/profil'} className={({ isActive, isPending }) => (isPending ? 'pending' : isActive ? 'active text-green-500' : 'text-zinc-400')}>
                       <div className="flex items-center gap-2 hover:text-green-500 text-[0.95rem]">
-                        <PiWarningCircle /> Acara
+                        <PiWarningCircle /> Profil
                       </div>
                     </NavLink>
                   </SheetClose>
