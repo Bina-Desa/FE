@@ -48,9 +48,11 @@ export default function BerandaSection() {
           ))}
         </div>
 
-        <a href="/tempat-wisata" className="flex mb-10 text-sm mx-auto px-4 py-2 items-center text-green-500 underline rounded-md w-max justify-center">
-          Lihat Semua Wisata <IoIosArrowForward />
-        </a>
+        <div className="flex max-w-6xl justify-end px-4 mx-auto">
+          <a href="/tempat-wisata" className="flex mb-10 text-sm px-6 py-2 items-center text-green-500  rounded-md w-max justify-center border border-green-500  hover:bg-green-500 hover:text-white transition-all duration-150">
+            Lihat Semua Wisata <IoIosArrowForward />
+          </a>
+        </div>
       </div>
 
       <div className="max-w-7xl mx-auto px-4 mt-14">
@@ -76,9 +78,12 @@ export default function BerandaSection() {
           ))}
         </div>
 
-        <a href="/tempat-wisata" className="flex mb-10 text-sm mx-auto px-4 py-2 items-center text-green-500 underline rounded-md w-max justify-center">
-          Lihat Semua Wisata <IoIosArrowForward />
-        </a>
+        <div className="flex max-w-6xl justify-end px-4 mx-auto">
+          <a href="/kuliner" className="flex mb-10 text-sm px-6 py-2 items-center text-green-500  rounded-md w-max justify-center border border-green-500 hover:bg-green-500 hover:text-white transition-all duration-150">
+            Lihat Semua Kuliner
+            <IoIosArrowForward />
+          </a>
+        </div>
       </div>
     </div>
   );
