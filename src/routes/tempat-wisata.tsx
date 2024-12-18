@@ -1,6 +1,8 @@
-import { tempatWisata } from '@/data/dummyData';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import CarouselWrapper from '@/components/ui/image-carousel';
+import { fetcher } from '@/lib/fetcher';
 import { IoLocationOutline } from 'react-icons/io5';
+import useSWR from 'swr';
 
 interface WisataAlam {
   id: number;
@@ -15,6 +17,20 @@ interface WisataAlam {
 }
 
 export default function TempatWisata() {
+  const { data } = useSWR(import.meta.env.VITE_BASE_URL + '/api/destinations', fetcher);
+
+  const wisata = data?.data.map((item: any) => ({
+    id: item.id,
+    nama: item.name,
+    lokasi: {
+      lat: item.location.latitude,
+      long: item.location.longitude,
+      gmaps: item.location.gmaps,
+    },
+    deskripsiPendek: item.shortdeskripsi,
+    image: JSON.parse(item.image),
+  }));
+
   return (
     <div className="min-h-screen py-28">
       <div className="text-center">
@@ -26,18 +42,19 @@ export default function TempatWisata() {
 
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {tempatWisata.map((wisata: WisataAlam, index: number) => (
-            <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-              <CarouselWrapper images={wisata.image} />
-              <div className="">
-                <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                  Lihat Detail <IoLocationOutline />
-                </a>
-              </div>
-            </a>
-          ))}
+          {wisata &&
+            wisata.map((wisata: WisataAlam, index: number) => (
+              <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+                <CarouselWrapper images={wisata.image} />
+                <div className="">
+                  <p className="font-bold text-lg mt-4">{wisata.nama}</p>
+                  <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
+                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
+                    Lihat Detail <IoLocationOutline />
+                  </a>
+                </div>
+              </a>
+            ))}
         </div>
       </div>
     </div>

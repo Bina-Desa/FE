@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fetcher } from '@/lib/fetcher';
 import { Helmet } from 'react-helmet';
 import { IoIosArrowForward } from 'react-icons/io';
@@ -20,6 +21,18 @@ interface WisataAlam {
 export default function BerandaSection() {
   const { data } = useSWR(import.meta.env.VITE_BASE_URL + '/api/destinations', fetcher);
 
+  const wisata = data?.data.map((item: any) => ({
+    id: item.id,
+    nama: item.name,
+    lokasi: {
+      lat: item.location.latitude,
+      long: item.location.longitude,
+      gmaps: item.location.gmaps,
+    },
+    deskripsiPendek: item.shortdeskripsi,
+    image: JSON.parse(item.image),
+  }));
+
   return (
     <div className="w-full">
       <Helmet>
@@ -37,14 +50,14 @@ export default function BerandaSection() {
         </div>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {data &&
-            data.data.map((wisata: WisataAlam, index: number) => (
+          {wisata &&
+            wisata.map((wisata: WisataAlam, index: number) => (
               <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <CarouselWrapper images={wisata.image} />
                 <div className="">
                   <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                   <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
+                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1"  rel="noopener noreferrer">
                     Lihat Detail <IoIosArrowForward />
                   </a>
                 </div>
@@ -68,7 +81,7 @@ export default function BerandaSection() {
         </div>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {data &&
+          {/* {data &&
             data.data.map((wisata: WisataAlam, index: number) => (
               <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <CarouselWrapper images={wisata.image} />
@@ -80,7 +93,7 @@ export default function BerandaSection() {
                   </a>
                 </div>
               </a>
-            ))}
+            ))} */}
         </div>
 
         <div className="flex max-w-6xl justify-end px-4 mx-auto">
