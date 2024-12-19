@@ -38,7 +38,7 @@ export default function DetailWisata() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-28">
-      <div>
+      <div className="">
         <CarouselWrapper images={wisata?.image} />
       </div>
       <div className="mt-10">

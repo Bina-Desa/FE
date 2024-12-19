@@ -5,7 +5,7 @@ export default function Profil() {
         <p className="font-bold text-3xl">
           Profil <span className="text-green-500">Kebon Ayu</span>
         </p>
-        <p className="text-zinc-400">Mengenal lebih dekat desa wisata kebon ayu</p>
+        <p className="text-zinc-500">Mengenal lebih dekat desa wisata kebon ayu</p>
       </div>
       <div className="max-w-6xl mx-auto p-6 bg-white rounded-md my-10">
         <p>

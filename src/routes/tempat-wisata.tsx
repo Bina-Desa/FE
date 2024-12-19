@@ -50,7 +50,7 @@ export default function TempatWisata() {
         <h1 className="text-center text-3xl font-bold">
           Tempat <span className="text-green-500">Wisata</span>
         </h1>
-        <p className="text-zinc-400">Temukan berbagai tempat wisata yang menarik</p>
+        <p className="text-zinc-500">Temukan berbagai tempat wisata yang menarik</p>
       </div>
 
       <div>

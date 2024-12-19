@@ -5,7 +5,7 @@ const LoginPage: React.FC = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Untuk navigasi ke halaman lain
+  const navigate = useNavigate(); 
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault(); // Mencegah reload halaman
