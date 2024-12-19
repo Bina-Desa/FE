@@ -20,9 +20,17 @@ interface WisataAlam {
 
 export default function TempatWisata() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/destinations?page=${currentPage}&limit=10`, fetcher);
+  const { data, error } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/destinations?page=${currentPage}&limit=10`, fetcher);
 
-  const wisata = data?.data.map((item: any) => ({
+  if (error) {
+    return <div className="text-center text-red-500">Gagal memuat data.</div>;
+  }
+
+  if (!data) {
+    return <div className="text-center">Memuat...</div>;
+  }
+
+  const wisata = data?.data?.map((item: any) => ({
     id: item.id,
     nama: item.name,
     lokasi: {
@@ -34,7 +42,7 @@ export default function TempatWisata() {
     image: JSON.parse(item.image),
   }));
 
-  const totalPages = data.totalPages;
+  const totalPages = data?.totalPages || 1;
 
   return (
     <div className="min-h-screen py-28">
@@ -47,19 +55,18 @@ export default function TempatWisata() {
 
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {wisata &&
-            wisata.map((wisata: WisataAlam, index: number) => (
-              <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <CarouselWrapper images={wisata.image} />
-                <div className="">
-                  <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                  <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                    Lihat Detail <IoLocationOutline />
-                  </a>
-                </div>
-              </a>
-            ))}
+          {wisata?.map((wisata: WisataAlam) => (
+            <a href={`tempat-wisata/${wisata.id}`} key={wisata.id} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+              <CarouselWrapper images={wisata.image} />
+              <div>
+                <p className="font-bold text-lg mt-4">{wisata.nama}</p>
+                <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
+                <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
+                  Lihat Detail <IoLocationOutline />
+                </a>
+              </div>
+            </a>
+          ))}
         </div>
 
         <Pagination>
