@@ -36,9 +36,13 @@ export default function CarouselWrapper({ images }: { images: string[] }) {
       </Carousel>
 
       <div className="absolute inset-x-0 bottom-4 flex justify-center">
-        {Array.from({ length: count }).map((_, dotIndex) => (
-          <GoDotFill key={dotIndex} className={`text-lg cursor-pointer ${current === dotIndex + 1 ? 'text-green-500' : 'text-gray-400 opacity-50'}`} onClick={() => api?.scrollTo(dotIndex)} />
-        ))}
+        {count > 1 && (
+          <div className="absolute inset-x-0 bottom-4 flex justify-center">
+            {Array.from({ length: count }).map((_, dotIndex) => (
+              <GoDotFill key={dotIndex} className={`text-lg cursor-pointer ${current === dotIndex + 1 ? 'text-green-500' : 'text-gray-400 opacity-50'}`} onClick={() => api?.scrollTo(dotIndex)} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

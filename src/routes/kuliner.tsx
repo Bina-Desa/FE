@@ -1,7 +1,33 @@
-import { Link } from 'react-router-dom';
-import { kuliner } from '@/data/dummyData';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+import useSWR from 'swr';
+import CarouselWrapper from '@/components/ui/image-carousel';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { BsShop } from 'react-icons/bs';
+import { MdLocationOn } from 'react-icons/md';
+import { fetcher } from '@/lib/fetcher';
 
 export default function Kuliner() {
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const { data, error } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/kuliner/product?page=${currentPage}&limit=10`, fetcher);
+
+  if (error) return <p>Error loading data</p>;
+  if (!data) return <p>Loading...</p>;
+
+  const products = data.items.map((item: any) => ({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    description: item.description,
+    image: JSON.parse(item.image),
+    warung: {
+      name: item.Warung?.name || 'Tidak Diketahui',
+      address: item.Warung?.address || 'Tidak Diketahui',
+    },
+  }));
+
+  const totalPages = data.totalPages;
+
   return (
     <div className="min-h-screen py-28 bg-gray-100">
       <div className="text-center">
@@ -11,36 +37,45 @@ export default function Kuliner() {
         <p className="text-zinc-500">Temukan berbagai tempat kuliner yang lezat</p>
       </div>
 
-      <div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
-          {kuliner.map((warung) => (
-            <div
-              key={warung.id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:-translate-y-2 hover:shadow-xl"
-            >
-              <img
-                src={warung.gambar_warung}
-                alt={`Gambar ${warung.nama_warung}`}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-5">
-                {/* Membatasi title menjadi 1 baris */}
-                <h2 className="text-lg font-semibold text-gray-800 truncate">{warung.nama_warung}</h2>
-                
-                {/* Membatasi deskripsi menjadi 3 baris */}
-                <p className="text-sm text-gray-600 mt-2 line-clamp-3">{warung.deskripsi}</p>
-                
-                <Link
-                  to={`/kuliner/${warung.id}`}
-                  className="mt-4 inline-block bg-green-500 text-white text-sm font-medium px-6 py-2 rounded-md hover:bg-green-600"
-                >
-                  Lihat Menu
-                </Link>
-              </div>
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
+        {products.map((product: any) => (
+          <div key={product.id} className="bg-white p-3 rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+            <div>
+              <CarouselWrapper images={product.image} />
             </div>
-          ))}
-        </div>
+            <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
+            <p className="font-bold">Rp. {product.price}</p>
+            <p className="text-md mt-2">{product.description}</p>
+            <div className="mt-3 flex items-center gap-4">
+              <p className="flex text-md items-center gap-2">
+                <BsShop className="text-green-500" /> {product.warung.name}
+              </p>
+              <p className="flex text-md items-center gap-2">
+                <MdLocationOn className="text-red-500" /> {product.warung.address}
+              </p>
+            </div>
+          </div>
+        ))}
       </div>
+
+      {/* Pagination */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <PaginationItem key={i}>
+              <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }

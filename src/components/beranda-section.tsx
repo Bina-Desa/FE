@@ -5,6 +5,8 @@ import { IoIosArrowForward } from 'react-icons/io';
 import useSWR from 'swr';
 import HeroSection from './ui/hero-section';
 import CarouselWrapper from './ui/image-carousel';
+import { BsShop } from 'react-icons/bs';
+import { MdLocationOn } from 'react-icons/md';
 
 interface WisataAlam {
   id: number;
@@ -19,9 +21,9 @@ interface WisataAlam {
 }
 
 export default function BerandaSection() {
-  const { data } = useSWR(import.meta.env.VITE_BASE_URL + '/api/destinations', fetcher);
+  const { data: dataWisata } = useSWR(import.meta.env.VITE_BASE_URL + '/api/destinations', fetcher);
 
-  const wisata = data?.data.map((item: any) => ({
+  const wisata = dataWisata?.data.map((item: any) => ({
     id: item.id,
     nama: item.name,
     lokasi: {
@@ -31,6 +33,20 @@ export default function BerandaSection() {
     },
     deskripsiPendek: item.shortdeskripsi,
     image: JSON.parse(item.image),
+  }));
+
+  const { data: dataProducts } = useSWR(import.meta.env.VITE_BASE_URL + '/api/kuliner/product', fetcher);
+
+  const products = dataProducts?.items.map((item: any) => ({
+    id: item.id,
+    name: item.name,
+    price: item.price,
+    description: item.description,
+    image: JSON.parse(item.image),
+    warung: {
+      name: item.Warung.name,
+      address: item.Warung.address,
+    },
   }));
 
   return (
@@ -51,13 +67,13 @@ export default function BerandaSection() {
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
           {wisata &&
-            wisata.map((wisata: WisataAlam, index: number) => (
+            wisata.slice(0, 3).map((wisata: WisataAlam, index: number) => (
               <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <CarouselWrapper images={wisata.image} />
                 <div className="">
                   <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                   <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1"  rel="noopener noreferrer">
+                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
                     Lihat Detail <IoIosArrowForward />
                   </a>
                 </div>
@@ -81,19 +97,25 @@ export default function BerandaSection() {
         </div>
 
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {/* {data &&
-            data.data.map((wisata: WisataAlam, index: number) => (
-              <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <CarouselWrapper images={wisata.image} />
+          {products &&
+            products.slice(0, 3).map((product: any, index: number) => (
+              <div key={index} className="bg-white p-3 rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <div className="">
-                  <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                  <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                    Lihat Detail <IoIosArrowForward />
-                  </a>
+                  <CarouselWrapper images={product.image} />
                 </div>
-              </a>
-            ))} */}
+                <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
+                <p className="font-bold">Rp. {product.price}</p>
+                <p className="text-md mt-2">{product.description}</p>
+                <div className="mt-3 flex items-center gap-4">
+                  <p className="flex text-md items-center gap-2">
+                    <BsShop className="text-green-500" /> {product.warung.name}
+                  </p>
+                  <p className="flex text-md items-center gap-2">
+                    <MdLocationOn className="text-red-500" /> {product.warung.address}
+                  </p>
+                </div>
+              </div>
+            ))}
         </div>
 
         <div className="flex max-w-6xl justify-end px-4 mx-auto">

@@ -3,6 +3,8 @@ import CarouselWrapper from '@/components/ui/image-carousel';
 import { fetcher } from '@/lib/fetcher';
 import { IoLocationOutline } from 'react-icons/io5';
 import useSWR from 'swr';
+import { useState } from 'react';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 
 interface WisataAlam {
   id: number;
@@ -17,7 +19,8 @@ interface WisataAlam {
 }
 
 export default function TempatWisata() {
-  const { data } = useSWR(import.meta.env.VITE_BASE_URL + '/api/destinations', fetcher);
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/destinations?page=${currentPage}&limit=10`, fetcher);
 
   const wisata = data?.data.map((item: any) => ({
     id: item.id,
@@ -30,6 +33,8 @@ export default function TempatWisata() {
     deskripsiPendek: item.shortdeskripsi,
     image: JSON.parse(item.image),
   }));
+
+  const totalPages = data.totalPages;
 
   return (
     <div className="min-h-screen py-28">
@@ -56,6 +61,24 @@ export default function TempatWisata() {
               </a>
             ))}
         </div>
+
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
