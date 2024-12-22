@@ -12,15 +12,17 @@ export default function AdminRoot() {
   }
 
   return (
-    <>
+    <div className="bg-white">
       <Toaster richColors position="top-center" theme="light" />
       <SidebarProvider>
         <AppSidebar />
-        <main>
+        <main className="bg-white">
           <SidebarTrigger />
-          <Outlet />
+          <div className='pb-4'>
+            <Outlet />
+          </div>
         </main>
       </SidebarProvider>
-    </>
+    </div>
   );
 }
