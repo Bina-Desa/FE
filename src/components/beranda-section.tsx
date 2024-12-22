@@ -7,6 +7,7 @@ import HeroSection from './ui/hero-section';
 import CarouselWrapper from './ui/image-carousel';
 import { BsShop } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface WisataAlam {
   id: number;
@@ -99,7 +100,7 @@ export default function BerandaSection() {
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
           {products &&
             products.slice(0, 3).map((product: any, index: number) => (
-              <div key={index} className="bg-white p-3 rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+              <div key={index} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <div className="">
                   <CarouselWrapper images={product.image} />
                 </div>
@@ -125,6 +126,65 @@ export default function BerandaSection() {
           </a>
         </div>
       </div>
+
+      <div className="mt-10 px-4">
+        <div className="bg-white rounded-md shadow-md p-4 max-w-6xl mx-auto flex items-center gap-6 max-md:flex-col">
+          <div>
+            <img src="https://jadesta.kemenparekraf.go.id/imgpost/118434.jpg" alt="" className="rounded-md" />
+          </div>
+          <div>
+            <p className="font-bold text-3xl max-md:text-2xl">
+              Apa itu desa Wisata <span className="text-green-500">Kebon Ayu?</span>
+            </p>
+            <div className="mt-4 flex flex-col gap-2">
+              <p className="leading-relaxed">
+                Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Timur. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.
+              </p>
+              <p className="leading-relaxed">Ada berbagai tempat wisata yang menarik di Desa Wisata Kebon Ayu, seperti Wisata Kuliner Golden Melon, Wisata Jembatan Gantung, dan berbagai tempat wisata lainnya.</p>
+
+              <a href="/profil" className="border border-green-500 text-green-500 px-4 py-1.5 rounded-full w-max text-sm mt-6 hover:bg-green-500 hover:text-white transition-all duration-200">
+                Selengkapnya
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-10 px-4">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold">FAQ</h1>
+          <p className="text-zinc-500">Temukan jawaban dari pertanyaan anda</p>
+        </div>
+        <div className="max-w-6xl bg-white p-4 rounded-md shadow-md mx-auto my-10 ">
+          <Accordion type="single" collapsible className="w-full">
+            {faq.map((item, index) => (
+              <AccordionItem key={index} value={`item-${index}`}>
+                <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
+                <AccordionContent>{item.answer}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </div>
     </div>
   );
 }
+
+const faq = [
+  {
+    question: 'Apa itu Desa Wisata Kebon Ayu?',
+    answer: 'Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Timur. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.',
+  },
+  {
+    question: 'Apa saja tempat wisata yang ada di Desa Wisata Kebon Ayu?',
+    answer: 'Ada berbagai tempat wisata yang menarik di Desa Wisata Kebon Ayu, seperti Wisata Kuliner Golden Melon, Wisata Jembatan Gantung, dan berbagai tempat wisata lainnya.',
+  },
+  {
+    question: 'Apa saja kuliner khas yang ada di Desa Wisata Kebon Ayu?',
+    answer: 'Ada berbagai kuliner khas yang ada di Desa Wisata Kebon Ayu, seperti Nasi Goreng, Mie Ayam, dan berbagai kuliner khas lainnya.',
+  },
+  {
+    question: 'Apa saja kegiatan yang bisa dilakukan di Desa Wisata Kebon Ayu?',
+    answer: 'Ada berbagai kegiatan yang bisa dilakukan di Desa Wisata Kebon Ayu, seperti berjalan-jalan menikmati pemandangan, berbelanja oleh-oleh, dan berbagai kegiatan lainnya.',
+  },
+];

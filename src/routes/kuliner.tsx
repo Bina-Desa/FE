@@ -39,7 +39,7 @@ export default function Kuliner() {
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
         {products.map((product: any) => (
-          <div key={product.id} className="bg-white p-3 rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+          <div key={product.id} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
             <div>
               <CarouselWrapper images={product.image} />
             </div>
