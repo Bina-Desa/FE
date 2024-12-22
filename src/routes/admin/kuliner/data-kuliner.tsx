@@ -11,21 +11,9 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
 
-interface WisataAlam {
-  id: number;
-  nama: string;
-  lokasi: {
-    lat: string;
-    long: string;
-    gmaps: string;
-  };
-  deskripsiPendek: string;
-  image: string[];
-}
-
-export default function DataWisata() {
+export default function DataKuliner() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, error, mutate } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/destinations?page=${currentPage}&limit=10`, fetcher);
+  const { data, error, mutate } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/kuliner/product?page=${currentPage}&limit=10`, fetcher);
   const [isLoading, setIsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -41,19 +29,19 @@ export default function DataWisata() {
     setSearchQuery(e.target.value.toLowerCase());
   };
 
-  const wisata = data?.data?.map((item: any) => ({
+  const products = data.items.map((item: any) => ({
     id: item.id,
-    nama: item.name,
-    lokasi: {
-      lat: item.location.latitude,
-      long: item.location.longitude,
-      gmaps: item.location.gmaps,
-    },
-    deskripsiPendek: item.shortdeskripsi,
+    name: item.name,
+    price: item.price,
+    description: item.description,
     image: JSON.parse(item.image),
+    warung: {
+      name: item.Warung?.name || 'Tidak Diketahui',
+      address: item.Warung?.address || 'Tidak Diketahui',
+    },
   }));
 
-  const filteredWisata = wisata.filter((item: WisataAlam) => item.nama.toLowerCase().includes(searchQuery));
+  const filteredProducts = products.filter((item: any) => item.name.toLowerCase().includes(searchQuery));
 
   const totalPages = data?.totalPages || 1;
 
@@ -67,7 +55,7 @@ export default function DataWisata() {
 
     try {
       setIsLoading(true);
-      const url = `${import.meta.env.VITE_BASE_URL}/api/destinations/${id}`;
+      const url = `${import.meta.env.VITE_BASE_URL}/api/kuliner/product/${id}`;
 
       const response = await fetch(url, {
         method: 'DELETE',
@@ -96,42 +84,40 @@ export default function DataWisata() {
 
   return (
     <div className="px-4 mt-4 max-w-6xl">
-      <p className="font-bold text-2xl ">Data Wisata</p>
+      <p className="font-bold text-2xl ">Data Kuliner</p>
 
       <div className="mt-6 w-[60rem]">
         <div className="flex justify-between">
           <Input placeholder="Search..." className="w-96" value={searchQuery} onChange={handleSearchChange} />
-          <a href="/admin/wisata/create">
+          <a href="/admin/kuliner/create">
             <Button>Tambah Data </Button>
           </a>
         </div>
       </div>
       <div className="mt-4 max-w-6xl border rounded-md pb-2">
         <Table className="max-w-6xl w-full">
-          <TableCaption>Daftar Data WIsata.</TableCaption>
+          <TableCaption>Daftar Data products.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Gambar</TableHead>
               <TableHead>Nama</TableHead>
-              <TableHead>Lokasi</TableHead>
+              <TableHead>Harga</TableHead>
               <TableHead>Deskripsi</TableHead>
+              <TableHead>Warung</TableHead>
               <TableHead>Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredWisata &&
-              filteredWisata.map((item: WisataAlam, index: number) => (
+            {filteredProducts &&
+              filteredProducts.map((item: any, index: number) => (
                 <TableRow key={index}>
                   <TableCell>
                     <img src={import.meta.env.VITE_BASE_URL + item.image[0]} alt={item.nama} className="w-20 h-16 object-cover rounded-md" />
                   </TableCell>
-                  <TableCell>{item.nama}</TableCell>
-                  <TableCell>
-                    <a href={item.lokasi.gmaps} target="_blank" className="text-sm py-1 px-2 rounded-md bg-blue-500 text-white">
-                      Lihat lokasi
-                    </a>
-                  </TableCell>
-                  <TableCell>{item.deskripsiPendek}</TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>{item.price}</TableCell>
+                  <TableCell>{item.description}</TableCell>
+                  <TableCell>{item.warung.name}</TableCell>
                   <TableCell>
                     <div className="flex gap-2">
                       <Dialog>
@@ -155,7 +141,7 @@ export default function DataWisata() {
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
-                      <a href={`/wisata/update/${item.id}`}>
+                      <a href={`/products/update/${item.id}`}>
                         <Button variant={'default'} className="bg-green-500 hover:bg-green-400">
                           <Pencil />
                         </Button>
@@ -165,7 +151,7 @@ export default function DataWisata() {
                 </TableRow>
               ))}
             <TableRow className="text-center py-4 mx-auto">
-              <TableCell colSpan={5}> {filteredWisata.length <= 0 ? <p>Data Tidak Ada</p> : ''}</TableCell>
+              <TableCell colSpan={5}> {filteredProducts.length <= 0 ? <p>Data Tidak Ada</p> : ''}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

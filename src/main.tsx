@@ -18,6 +18,9 @@ import DataWisata from './routes/admin/wisata/data-wisata.tsx';
 import CreateWisata from './routes/admin/wisata/create-wisata.tsx';
 import UpdateWisata from './routes/admin/wisata/update-wisata.tsx';
 import LoginPage from './routes/admin/login.tsx';
+import DataKuliner from './routes/admin/kuliner/data-kuliner.tsx';
+import CreateKuliner from './routes/admin/kuliner/create-kuliner.tsx';
+import UpdateKuliner from './routes/admin/kuliner/update-kuliner.tsx';
 
 const router = createBrowserRouter([
   {
@@ -49,6 +52,12 @@ const router = createBrowserRouter([
       },
       { path: 'wisata/create', element: <CreateWisata /> },
       { path: 'wisata/update', element: <UpdateWisata /> },
+      {
+        path: 'kuliner',
+        element: <DataKuliner />,
+      },
+      { path: 'kuliner/create', element: <CreateKuliner /> },
+      { path: 'kuliner/update', element: <UpdateKuliner /> },
     ],
   },
 ]);
