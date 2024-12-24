@@ -21,6 +21,7 @@ import LoginPage from './routes/admin/login.tsx';
 import DataKuliner from './routes/admin/kuliner/data-kuliner.tsx';
 import CreateKuliner from './routes/admin/kuliner/create-kuliner.tsx';
 import UpdateKuliner from './routes/admin/kuliner/update-kuliner.tsx';
+import DataWarung from './routes/admin/warung/data-warung.tsx';
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       },
       { path: 'kuliner/create', element: <CreateKuliner /> },
       { path: 'kuliner/update', element: <UpdateKuliner /> },
+      {
+        path: 'warung',
+        element: <DataWarung />,
+      },
     ],
   },
 ]);

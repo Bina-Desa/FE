@@ -100,11 +100,11 @@ export default function DataKuliner() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Gambar</TableHead>
-              <TableHead>Nama</TableHead>
-              <TableHead>Harga</TableHead>
-              <TableHead>Deskripsi</TableHead>
-              <TableHead>Warung</TableHead>
-              <TableHead>Aksi</TableHead>
+              <TableHead className="text-center">Nama</TableHead>
+              <TableHead className="text-center">Harga</TableHead>
+              <TableHead className="text-center">Deskripsi</TableHead>
+              <TableHead className="text-center">Warung</TableHead>
+              <TableHead className="text-center">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -114,12 +114,12 @@ export default function DataKuliner() {
                   <TableCell>
                     <img src={import.meta.env.VITE_BASE_URL + item.image[0]} alt={item.nama} className="w-20 h-16 object-cover rounded-md" />
                   </TableCell>
-                  <TableCell>{item.name}</TableCell>
-                  <TableCell>{item.price}</TableCell>
-                  <TableCell>{item.description}</TableCell>
-                  <TableCell>{item.warung.name}</TableCell>
+                  <TableCell className="text-center">{item.name}</TableCell>
+                  <TableCell className="text-center">{item.price}</TableCell>
+                  <TableCell className="text-center">{item.description}</TableCell>
+                  <TableCell className="text-center">{item.warung.name}</TableCell>
                   <TableCell>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 justify-center">
                       <Dialog>
                         <DialogTrigger>
                           <Button variant={'destructive'}>

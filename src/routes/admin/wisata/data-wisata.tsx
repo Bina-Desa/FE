@@ -112,10 +112,10 @@ export default function DataWisata() {
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Gambar</TableHead>
-              <TableHead>Nama</TableHead>
-              <TableHead>Lokasi</TableHead>
-              <TableHead>Deskripsi</TableHead>
-              <TableHead>Aksi</TableHead>
+              <TableHead className="text-center">Nama</TableHead>
+              <TableHead className="text-center">Lokasi</TableHead>
+              <TableHead className="text-center">Deskripsi</TableHead>
+              <TableHead className="text-center">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -125,15 +125,15 @@ export default function DataWisata() {
                   <TableCell>
                     <img src={import.meta.env.VITE_BASE_URL + item.image[0]} alt={item.nama} className="w-20 h-16 object-cover rounded-md" />
                   </TableCell>
-                  <TableCell>{item.nama}</TableCell>
-                  <TableCell>
+                  <TableCell className="text-center">{item.nama}</TableCell>
+                  <TableCell className="text-center">
                     <a href={item.lokasi.gmaps} target="_blank" className="text-sm py-1 px-2 rounded-md bg-blue-500 text-white">
                       Lihat lokasi
                     </a>
                   </TableCell>
-                  <TableCell>{item.deskripsiPendek}</TableCell>
+                  <TableCell className="text-center">{item.deskripsiPendek}</TableCell>
                   <TableCell>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 justify-center">
                       <Dialog>
                         <DialogTrigger>
                           <Button variant={'destructive'}>
