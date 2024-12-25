@@ -36,8 +36,21 @@ export default function DataWarung() {
 
   const token = localStorage.getItem('authToken');
 
-  if (error) return <div className="text-center text-red-500">Gagal memuat data.</div>;
-  if (!data) return <div className="text-center">Memuat...</div>;
+  if (error) {
+    return (
+      <div className="w-[80rem] h-screen flex items-center justify-center">
+        <p>Gagal memuat data</p>
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="w-[80rem] h-screen flex items-center justify-center">
+        <p>Memuat...</p>
+      </div>
+    );
+  }
 
   const filteredWarung = data.filter((item) => item.name.toLowerCase().includes(searchQuery.toLowerCase()));
 
@@ -185,19 +198,19 @@ export default function DataWarung() {
           <TableCaption>Daftar Data Warung</TableCaption>
           <TableHeader>
             <TableRow>
-              <TableHead className='text-center'>No</TableHead>
-              <TableHead className='text-center'>Nama</TableHead>
-              <TableHead className='text-center'>Alamat</TableHead>
-              <TableHead className='text-center'>Aksi</TableHead>
+              <TableHead className="text-center">No</TableHead>
+              <TableHead className="text-center">Nama</TableHead>
+              <TableHead className="text-center">Alamat</TableHead>
+              <TableHead className="text-center">Aksi</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredWarung.map((item, index) => (
               <TableRow key={item.id}>
-                <TableCell className='text-center'>{index + 1}</TableCell>
-                <TableCell className='text-center'>{item.name}</TableCell>
-                <TableCell className='text-center'>{item.address}</TableCell>
-                <TableCell >
+                <TableCell className="text-center">{index + 1}</TableCell>
+                <TableCell className="text-center">{item.name}</TableCell>
+                <TableCell className="text-center">{item.address}</TableCell>
+                <TableCell>
                   <div className="flex justify-center gap-2">
                     <Dialog>
                       <DialogTrigger asChild>

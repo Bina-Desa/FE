@@ -30,11 +30,19 @@ export default function DataWisata() {
   const [searchQuery, setSearchQuery] = useState('');
 
   if (error) {
-    return <div className="text-center text-red-500">Gagal memuat data.</div>;
+    return (
+      <div className="w-[80rem] h-screen flex items-center justify-center">
+        <p>Gagal memuat data</p>
+      </div>
+    );
   }
 
   if (!data) {
-    return <div className="text-center">Memuat...</div>;
+    return (
+      <div className="w-[80rem] h-screen flex items-center justify-center">
+        <p>Memuat...</p>
+      </div>
+    );
   }
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
