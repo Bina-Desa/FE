@@ -1,56 +1,84 @@
-import { Link } from 'react-router-dom';
-import { acaraList } from '@/data/dummyData';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+import useSWR from 'swr';
+import CarouselWrapper from '@/components/ui/image-carousel';
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { fetcher } from '@/lib/fetcher';
+import { MdLocationOn } from 'react-icons/md';
+import { Calendar } from 'lucide-react';
+import { format } from 'date-fns';
+import { IoIosArrowForward } from 'react-icons/io';
 
 export default function Acara() {
+  const [currentPage, setCurrentPage] = React.useState(1);
+  const { data, error } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/event?page=${currentPage}&limit=10`, fetcher);
+
+  if (error) return <p>Error loading data</p>;
+  if (!data) return <p>Loading...</p>;
+
+  const sortedEvents = data.data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const events = sortedEvents.map((item: any) => ({
+    id: item.id,
+    title: item.title,
+    description: item.description,
+    location: item.location,
+    date: format(new Date(item.date), 'dd MMMM yyyy'),
+    image: JSON.parse(item.image),
+  }));
+
+  const totalPages = data.totalPages;
+
   return (
     <div className="min-h-screen py-28 bg-gray-100">
       <div className="text-center">
         <h1 className="text-center text-3xl font-bold text-gray-800">
-          Event <span className="text-green-500">Kebon Ayu</span>
+          Berbagai <span className="text-green-500">Acara</span>
         </h1>
-        <p className="text-zinc-500">Temukan berbagai acara menarik di Kebon Ayu</p>
+        <p className="text-zinc-500">Temukan berbagai acara menarik dan seru</p>
       </div>
 
-      <div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 sm:grid-cols-2 gap-6 my-10 max-w-6xl mx-auto px-4">
-          {acaraList.map((acara) => (
-            <div
-              key={acara.id}
-              className="bg-white shadow-lg rounded-lg overflow-hidden transition-transform transform hover:-translate-y-2 hover:shadow-xl"
-            >
-              <img
-                src={acara.image}
-                alt={`Gambar ${acara.title}`}
-                className="w-full h-48 object-cover"
-              />
-              <div className="p-5">
-                {/* Membatasi title menjadi 1 baris */}
-                <h2 className="text-lg font-semibold text-gray-800 truncate">{acara.title}</h2>
-                
-                {/* Membatasi deskripsi menjadi 1 baris dan tidak wrap */}
-                <p className="text-sm text-gray-600 mt-2 truncate">{acara.description}</p>
-                
-                {/* Tanggal Acara tetap 1 baris */}
-                <p className="text-sm text-gray-500 mt-2 truncate">
-                  Tanggal: {new Date(acara.eventDate).toLocaleDateString('id-ID')}
-                </p>
-
-                {/* Lokasi Acara tetap 1 baris */}
-                <p className="text-sm text-gray-500 mt-2 truncate">
-                  Lokasi: {acara.location}
-                </p>
-
-                <Link
-                  to={`/acara/${acara.id}`}
-                  className="mt-4 inline-block bg-green-500 text-white text-sm font-medium px-6 py-2 rounded-md hover:bg-green-600"
-                >
-                  Lihat Detail
-                </Link>
-              </div>
+      <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
+        {events.map((event: any) => (
+          <div key={event.id} className="bg-white p-3 pb-5 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+            <div>
+              <CarouselWrapper images={event.image} />
             </div>
-          ))}
-        </div>
+            <p className="mt-4 text-green-500 font-bold text-2xl">{event.title}</p>
+            <p className="text-md mt-2 line-clamp-2 w-full text-md text-zinc-500">{event.description}</p>
+            <div className="flex gap-4">
+              <p className="flex text-md items-center gap-2 mt-3 text-sm">
+                <Calendar className="text-green-500" size={18} /> {event.date}
+              </p>
+              <p className="flex text-md items-center gap-2 mt-3 text-sm">
+                <MdLocationOn className="text-red-500 text-xl" /> {event.location}
+              </p>
+            </div>
+            <a href={`/kuliner/:${event.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
+              Lihat Detail <IoIosArrowForward />
+            </a>
+          </div>
+        ))}
       </div>
+
+      {/* Pagination */}
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
+          </PaginationItem>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <PaginationItem key={i}>
+              <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
+                {i + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 }
