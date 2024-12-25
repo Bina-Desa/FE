@@ -73,7 +73,7 @@ export default function BerandaSection() {
                 <CarouselWrapper images={wisata.image} />
                 <div className="">
                   <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                  <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
+                  <p className="text-md text-zinc-500 mb-4  line-clamp-3">{wisata.deskripsiPendek}</p>
                   <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
                     Lihat Detail <IoIosArrowForward />
                   </a>
@@ -106,7 +106,7 @@ export default function BerandaSection() {
                 </div>
                 <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
                 <p className="font-bold">Rp. {product.price}</p>
-                <p className="text-md mt-2">{product.description}</p>
+                <p className="text-md mt-2  line-clamp-3">{product.description}</p>
                 <div className="mt-3 flex items-center gap-4">
                   <p className="flex text-md items-center gap-2">
                     <BsShop className="text-green-500" /> {product.warung.name}
@@ -138,7 +138,7 @@ export default function BerandaSection() {
             </p>
             <div className="mt-4 flex flex-col gap-2">
               <p className="leading-relaxed">
-                Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Timur. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.
+                Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Barat. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.
               </p>
               <p className="leading-relaxed">Ada berbagai tempat wisata yang menarik di Desa Wisata Kebon Ayu, seperti Wisata Kuliner Golden Melon, Wisata Jembatan Gantung, dan berbagai tempat wisata lainnya.</p>
 

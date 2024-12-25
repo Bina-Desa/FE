@@ -2,6 +2,8 @@ import { IoIosArrowForward } from 'react-icons/io';
 import { IoLocationOutline } from 'react-icons/io5';
 import { Button } from './button';
 import { useNavigate } from 'react-router-dom';
+
+
 const HeroSection = () => {
   const navigate = useNavigate();
   return (
@@ -27,6 +29,7 @@ const HeroSection = () => {
               <a
                 href="https://www.google.com/maps/place/Wisata+Kuliner+Kebon+Ayu/@-8.6929835,116.1020709,17z/data=!3m1!4b1!4m6!3m5!1s0x2dcdbddcf92518ef:0xc19d8aa1235a3045!8m2!3d-8.6929888!4d116.1046458!16s%2Fg%2F11p5kz19zy?entry=ttu&g_ep=EgoyMDI0MTAxNS4wIKXMDSoASAFQAw%3D%3D"
                 className="flex items-center gap-2"
+                target='_blank'
               >
                 <IoLocationOutline />
                 Google Maps
