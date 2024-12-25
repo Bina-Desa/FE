@@ -1,14 +1,28 @@
+import { useState, useEffect } from 'react';
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/sonner';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { AppSidebar } from './components/sidebar';
-import { useAuth } from '@/hooks/useAuth';
 
 export default function AdminRoot() {
-  const isAuthenticated = useAuth();
+  const [loading, setLoading] = useState(true);
+  const authToken = sessionStorage.getItem('authToken');
+  const navigate = useNavigate();
 
-  if (!isAuthenticated) {
-    return <p>Login dulu genk</p>;
+  useEffect(() => {
+    if (!authToken) {
+      navigate('/login');
+    } else {
+      setLoading(false);
+    }
+  }, [authToken, navigate]);
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center">
+        <p>Memuat...</p>
+      </div>
+    );
   }
 
   return (
@@ -18,7 +32,7 @@ export default function AdminRoot() {
         <AppSidebar />
         <main className="bg-white">
           <SidebarTrigger />
-          <div className='pb-4'>
+          <div className="pb-4">
             <Outlet />
           </div>
         </main>
