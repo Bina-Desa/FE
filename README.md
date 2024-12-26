@@ -16,3 +16,8 @@ npm install
 ```js
 npm run dev
 ```
+
+.env File
+```js
+VITE_BASE_URL
+```
