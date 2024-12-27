@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,9 +31,10 @@ type Wisata = {
 
 export default function CreateWisata() {
   const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
-  const [mapCenter, setMapCenter] = useState<[number, number]>([-6.9999568, 113.3793574]);
+  const [mapCenter] = useState<[number, number]>([-6.9999568, 113.3793574]);
   const [fasilitas, setFasilitas] = useState<string[]>([]);
-  const [images, setImages] = useState<string[]>([]);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fasilitasOptions = ['Kamar Mandi', 'WiFi', 'Tempat Sholat', 'Spot Foto', 'Tempat Makan'];
@@ -41,37 +43,48 @@ export default function CreateWisata() {
 
   const onSubmit: SubmitHandler<Wisata> = async (data) => {
     setIsLoading(true);
-    const formData = new FormData();
 
-    formData.append('name', data.name);
-    formData.append('category', data.category);
-    formData.append('latitude', locationInfo?.latitude.toString() || '');
-    formData.append('longitude', locationInfo?.longitude.toString() || '');
-    formData.append('gmaps', data.gmaps);
-    formData.append('shortdeskripsi', data.shortdeskripsi);
-    formData.append('longdeskripsi', data.longdeskripsi);
-    fasilitas.forEach((item) => formData.append('fasilitas[]', item));
-    images.forEach((img, index) => formData.append(`image_${index}`, img));
+    try {
+      const formData = new FormData();
 
-    const token = localStorage.getItem('authToken');
+      // Append JSON data
+      formData.append('name', data.name);
+      formData.append('category', data.category);
+      formData.append('latitude', locationInfo ? locationInfo.latitude.toString() : '');
+      formData.append('longitude', locationInfo ? locationInfo.longitude.toString() : '');
+      formData.append('gmaps', data.gmaps);
+      formData.append('shortdeskripsi', data.shortdeskripsi);
+      formData.append('longdeskripsi', data.longdeskripsi);
 
-    const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/destinations', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+      // Append fasilitas as JSON string
+      formData.append('fasilitas', JSON.stringify(fasilitas));
 
-    if (response.ok) {
-      toast.success('Data berhasil ditambahkan.');
-    } else {
+      // Append image files as an array
+      imageFiles.forEach((file) => {
+        formData.append('image', file);
+      });
+
+      const token = sessionStorage.getItem('authToken');
+
+      const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/destinations', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      });
+
+      if (response.ok) {
+        toast.success('Data berhasil ditambahkan.');
+      } else {
+        throw new Error('Failed to add data');
+      }
+    } catch (error) {
       toast.error('Data gagal ditambahkan.');
+      console.error('Error:', error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
-
-    console.log(formData);
   };
 
   const handleAddFasilitas = (newFasilitas: string) => {
@@ -87,15 +100,31 @@ export default function CreateWisata() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const fileArray = Array.from(files).slice(0, 2 - images.length);
-      const newImages = fileArray.map((file) => URL.createObjectURL(file));
-      setImages([...images, ...newImages]);
+      const fileArray = Array.from(files).slice(0, 2 - imageFiles.length);
+
+      // Store the actual files
+      setImageFiles((prevFiles) => [...prevFiles, ...fileArray]);
+
+      // Create preview URLs
+      const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
+      setImagePreview((prev) => [...prev, ...newPreviews]);
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreview((prev) => {
+      // Revoke the URL to prevent memory leaks
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
   const toggleFasilitasOption = (option: string) => {
     if (!fasilitas.includes(option)) {
       setFasilitas([...fasilitas, option]);
+    } else {
+      setFasilitas(fasilitas.filter((item) => item !== option));
     }
   };
 
@@ -104,7 +133,7 @@ export default function CreateWisata() {
       <p className="font-bold text-xl">Tambah Data Wisata</p>
       <div className="mt-4 w-full">
         <form action="" onSubmit={handleSubmit(onSubmit)}>
-          <div className="max-w-7xl w-[60rem] flex justify-between gap-4 max-md:flex col ">
+          <div className="max-w-7xl w-[60rem] flex justify-between gap-4 max-md:flex col">
             <div className="w-full flex flex-col gap-3">
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Nama</label>
@@ -139,12 +168,12 @@ export default function CreateWisata() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Gambar (max 2)</label>
-                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={images.length >= 2} />
+                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={imageFiles.length >= 2} />
                 <div className="flex gap-2 flex-wrap">
-                  {images.map((img, index) => (
+                  {imagePreview.map((preview, index) => (
                     <div key={index} className="relative">
-                      <img src={img} alt={`Preview ${index}`} className="h-20 w-20 object-cover rounded" />
-                      <span className="absolute top-0 right-0 text-sm bg-red-500 cursor-pointer hover:bg-red-600 rounded-full text-white px-2 py-0.5" onClick={() => setImages(images.filter((_, i) => i !== index))}>
+                      <img src={preview} alt={`Preview ${index}`} className="h-20 w-20 object-cover rounded" />
+                      <span className="absolute top-0 right-0 text-sm bg-red-500 cursor-pointer hover:bg-red-600 rounded-full text-white px-2 py-0.5" onClick={() => handleRemoveImage(index)}>
                         X
                       </span>
                     </div>
@@ -155,7 +184,6 @@ export default function CreateWisata() {
             <div className="w-full flex flex-col gap-3">
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Fasilitas</label>
-                {/* Input Manual */}
                 <div className="flex gap-2 items-center">
                   <Input id="fasilitasInput" placeholder="Tambah fasilitas wisata" />
                   <Button
@@ -169,21 +197,19 @@ export default function CreateWisata() {
                     Tambah
                   </Button>
                 </div>
-                {/* Checkbox Fasilitas */}
                 <div className="flex flex-wrap gap-4 mt-2">
                   {fasilitasOptions.map((option) => (
                     <div key={option} className="flex items-center gap-2">
-                      <input type="checkbox" id={option} onChange={() => toggleFasilitasOption(option)} />
+                      <input type="checkbox" id={option} checked={fasilitas.includes(option)} onChange={() => toggleFasilitasOption(option)} />
                       <label htmlFor={option}>{option}</label>
                     </div>
                   ))}
                 </div>
-                {/* List Manual Fasilitas */}
                 <div className="flex gap-2 flex-wrap mt-2">
                   {fasilitas
-                    .filter((item) => !fasilitasOptions.includes(item)) // Filter hanya fasilitas manual
+                    .filter((item) => !fasilitasOptions.includes(item))
                     .map((fasilitasItem, index) => (
-                      <div key={index} className="bg-blue-500 px-4 py-1 rounded-full flex items-center justify-between gap-2 cursor-pointer text-white " onClick={() => handleRemoveFasilitas(index)}>
+                      <div key={index} className="bg-blue-500 px-4 py-1 rounded-full flex items-center justify-between gap-2 cursor-pointer text-white" onClick={() => handleRemoveFasilitas(index)}>
                         <span>
                           {fasilitasItem} <span className="text-xs">X</span>
                         </span>

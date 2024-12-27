@@ -65,7 +65,7 @@ export default function DataWisata() {
 
   const totalPages = data?.totalPages || 1;
 
-  const token = localStorage.getItem('authToken');
+  const token = sessionStorage.getItem('authToken');
 
   const handleDelete = async (id: number) => {
     if (!token) {
@@ -163,7 +163,7 @@ export default function DataWisata() {
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
-                      <a href={`/wisata/update/${item.id}`}>
+                      <a href={`/admin/wisata/update/${item.id}`}>
                         <Button variant={'default'} className="bg-green-500 hover:bg-green-400">
                           <Pencil />
                         </Button>
