@@ -53,7 +53,7 @@ export default function DataKuliner() {
 
   const totalPages = data?.totalPages || 1;
 
-  const token = localStorage.getItem('authToken');
+  const token = sessionStorage.getItem('authToken');
 
   const handleDelete = async (id: number) => {
     if (!token) {
@@ -149,7 +149,7 @@ export default function DataKuliner() {
                           </DialogFooter>
                         </DialogContent>
                       </Dialog>
-                      <a href={`/products/update/${item.id}`}>
+                      <a href={`/admin/kuliner/update/${item.id}`}>
                         <Button variant={'default'} className="bg-green-500 hover:bg-green-400">
                           <Pencil />
                         </Button>
