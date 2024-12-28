@@ -52,13 +52,13 @@ const router = createBrowserRouter([
         element: <DataWisata />,
       },
       { path: 'wisata/create', element: <CreateWisata /> },
-      { path: 'wisata/update', element: <UpdateWisata /> },
+      { path: 'wisata/update/:id', element: <UpdateWisata /> },
       {
         path: 'kuliner',
         element: <DataKuliner />,
       },
       { path: 'kuliner/create', element: <CreateKuliner /> },
-      { path: 'kuliner/update', element: <UpdateKuliner /> },
+      { path: 'kuliner/update/:id', element: <UpdateKuliner /> },
       {
         path: 'warung',
         element: <DataWarung />,
