@@ -34,7 +34,7 @@ export default function DataWarung() {
   const { register: addRegister, handleSubmit: handleAddSubmit, reset: resetAddForm } = useForm<WarungFormData>();
   const { register: updateRegister, handleSubmit: handleUpdateSubmit, reset: resetUpdateForm } = useForm<WarungFormData>();
 
-  const token = localStorage.getItem('authToken');
+  const token = sessionStorage.getItem('authToken');
 
   if (error) {
     return (
