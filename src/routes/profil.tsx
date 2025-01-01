@@ -7,7 +7,7 @@ export default function Profil() {
         </p>
         <p className="text-zinc-500">Mengenal lebih dekat desa wisata kebon ayu</p>
       </div>
-      <div className="max-w-6xl mx-auto p-6 bg-white rounded-md my-10">
+      <div className="max-w-6xl mx-auto p-6 bg-white rounded-md my-10 shadow-sm">
         <div className="pb-10">
           <img src="/images/header.jpg" alt="" className="rounded-md h-[30rem] w-full object-cover" />
         </div>

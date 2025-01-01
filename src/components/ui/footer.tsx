@@ -16,10 +16,10 @@ export default function Footer() {
               <p className="text-sm mt-2 mb-6">Lengkapi form berikut untuk mengirimkan kritik dan saran</p>
               <form action="mailto:kebonayu@gmail.com" method="post" encType="text/plain">
                 <div className="flex flex-col gap-2">
-                  <label htmlFor="name">Email</label>
+                  <label htmlFor="name">Nama</label>
                   <Input placeholder="Nama anda" className="w-full text-black" required name="name" />
                 </div>
-                <div className="flex flex-col gap-2">
+                <div className="flex flex-col gap-2 mt-3">
                   <label htmlFor="email">Email</label>
                   <Input placeholder="alamatemail@email.com" className="w-full text-black" required type="email" name="email" />
                 </div>

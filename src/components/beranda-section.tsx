@@ -183,4 +183,8 @@ const faq = [
     question: 'Apa saja kegiatan yang bisa dilakukan di Desa Wisata Kebon Ayu?',
     answer: 'Ada berbagai kegiatan yang bisa dilakukan di Desa Wisata Kebon Ayu, seperti berjalan-jalan menikmati pemandangan, berbelanja oleh-oleh, meninkmati kuliner tradisonal dan berbagai kegiatan lainnya.',
   },
+  {
+    question: 'Apa saja kuliner khas yang ada di Desa Wisata Kebon Ayu?',
+    answer: 'Ada berbagai kuliner khas yang ada di Desa Wisata Kebon Ayu, seperti Sate Lombok, Ayam Taliwang, Plecing Kangkung, dan berbagai kuliner khas lainnya.',
+  },
 ];

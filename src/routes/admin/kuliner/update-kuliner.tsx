@@ -10,6 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import useSWR from 'swr';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 type Product = {
   id: string;
@@ -22,38 +23,34 @@ type Product = {
 };
 
 export default function UpdateKuliner() {
-  const { id } = useParams(); // Get the product ID from URL
+  const { id } = useParams();
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWarungId, setSelectedWarungId] = useState('');
+  const [imagePreview, setImagePreview] = useState<string[]>([]);
 
-  const { register, handleSubmit, setValue, watch, reset } = useForm<Product>();
+  const { register, handleSubmit, setValue, watch } = useForm<Product>();
   const selectedCategory = watch('category');
 
-  // Fetch existing product data
-  const { data: product } = useSWR(id ? `${import.meta.env.VITE_BASE_URL}/api/kuliner/product/${id}` : null, fetcher);
-
-  // Fetch warung list
   const { data: warung } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/kuliner/warung`, fetcher);
 
-  // Initialize form with existing data
   useEffect(() => {
-    if (product) {
-      reset({
-        name: product.name,
-        price: product.price,
-        description: product.description,
-        category: product.category,
-        warungId: product.warungId,
-      });
-
-      setSelectedWarungId(product.warungId);
-      const imageUrls = JSON.parse(product.image).map((img: any) => `${import.meta.env.VITE_BASE_URL}${img}`);
-      setImagePreview(imageUrls);
-      setImageFiles(JSON.parse(product.image));
+    async function fetchData() {
+      try {
+        const response = await axios.get(import.meta.env.VITE_BASE_URL + `/api/kuliner/product/${id}`);
+        const data = response.data;
+        setValue('name', data.name);
+        setValue('category', data.category);
+        setValue('description', data.description);
+        setValue('price', data.price);
+        setImageFiles(JSON.parse(data.image));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
-  }, [product, reset]);
+
+    fetchData();
+  }, [setValue, id]);
 
   const handleWarungSelect = (warungName: string) => {
     const selectedWarung = warung?.find((item: any) => item.name === warungName);
@@ -69,24 +66,18 @@ export default function UpdateKuliner() {
     try {
       const formData = new FormData();
 
-      // Append form data
       formData.append('name', data.name);
       formData.append('price', data.price);
       formData.append('description', data.description);
       formData.append('warungId', selectedWarungId);
       formData.append('category', data.category);
-
-      // Append only new images
       imageFiles.forEach((file) => {
         formData.append('image', file);
       });
 
-      // If there are existing images that weren't removed, append their URLs
-      imagePreview
-        .filter((url) => !url.startsWith('blob:')) // Only include existing URLs, not new file previews
-        .forEach((url) => {
-          formData.append('existingImages', url);
-        });
+      for (const [key, value] of formData.entries()) {
+        console.log(`${key}:`, value);
+      }
 
       const token = sessionStorage.getItem('authToken');
 
@@ -114,32 +105,23 @@ export default function UpdateKuliner() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const totalImages = imagePreview.length + imageFiles.length;
-      const remainingSlots = 2 - totalImages;
-      const fileArray = Array.from(files).slice(0, remainingSlots);
+      const fileArray = Array.from(files).slice(0, 2 - imageFiles.length);
 
       setImageFiles((prevFiles) => [...prevFiles, ...fileArray]);
+
       const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
       setImagePreview((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    const isExistingImage = !imagePreview[index].startsWith('blob:');
-
-    if (isExistingImage) {
-      // Remove existing image from preview
-      setImagePreview((prev) => prev.filter((_, i) => i !== index));
-    } else {
-      // Remove new image from both files and preview
-      const previewIndex = index - (imagePreview.length - imageFiles.length);
-      setImageFiles((prev) => prev.filter((_, i) => i !== previewIndex));
-      URL.revokeObjectURL(imagePreview[index]);
-      setImagePreview((prev) => prev.filter((_, i) => i !== index));
-    }
+    setImageFiles((prev) => prev.filter((_, i) => i !== index));
+    setImagePreview((prev) => {
+      URL.revokeObjectURL(prev[index]);
+      return prev.filter((_, i) => i !== index);
+    });
   };
 
-  // Get selected warung name for display
   const getSelectedWarungName = () => {
     if (warung && selectedWarungId) {
       const selected = warung.find((item: any) => item.id === selectedWarungId);
@@ -147,10 +129,6 @@ export default function UpdateKuliner() {
     }
     return '';
   };
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <div className="px-4 mt-6">
@@ -201,17 +179,16 @@ export default function UpdateKuliner() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Gambar (max 2)</label>
-                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={imagePreview.length >= 2} />
+                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={imageFiles.length >= 2} />
                 <div className="flex gap-2 flex-wrap">
-                  {imagePreview &&
-                    imagePreview.map((preview, index) => (
-                      <div key={index} className="relative">
-                        <img src={preview.startsWith('blob:') ? preview : preview} alt={`Preview ${index}`} className="h-20 w-20 object-cover rounded" />
-                        <span className="absolute top-0 right-0 text-sm bg-red-500 cursor-pointer hover:bg-red-600 rounded-full text-white px-2 py-0.5" onClick={() => handleRemoveImage(index)}>
-                          X
-                        </span>
-                      </div>
-                    ))}
+                  {imagePreview.map((preview, index) => (
+                    <div key={index} className="relative">
+                      <img src={preview} alt={`Preview ${index}`} className="h-20 w-20 object-cover rounded" />
+                      <span className="absolute top-0 right-0 text-sm bg-red-500 cursor-pointer hover:bg-red-600 rounded-full text-white px-2 py-0.5" onClick={() => handleRemoveImage(index)}>
+                        X
+                      </span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>

@@ -66,6 +66,9 @@ export default function CreateKuliner() {
 
       if (response.ok) {
         toast.success('Data berhasil ditambahkan.');
+        setTimeout(() => {
+          window.location.href = '/admin/kuliner';
+        }, 1000);
       } else {
         throw new Error('Failed to add data');
       }

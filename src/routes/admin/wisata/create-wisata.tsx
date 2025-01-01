@@ -76,6 +76,9 @@ export default function CreateWisata() {
 
       if (response.ok) {
         toast.success('Data berhasil ditambahkan.');
+        setTimeout(() => {
+          window.location.href = '/admin/wisata';
+        }, 1000);
       } else {
         throw new Error('Failed to add data');
       }
@@ -141,20 +144,15 @@ export default function CreateWisata() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Kategori</label>
-                <Select>
+                <Select onValueChange={(value) => setValue('category', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Pilih kategori wisata" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Wisata Alam" onClick={() => setValue('category', 'Wisata Alam')}>
-                      Wisata Alam
-                    </SelectItem>
-                    <SelectItem value="Wisata Kuliner" onClick={() => setValue('category', 'Wisata Kuliner')}>
-                      Wisata Kuliner
-                    </SelectItem>
-                    <SelectItem value="Wisata Budaya" onClick={() => setValue('category', 'Wisata Budaya')}>
-                      Wisata Budaya
-                    </SelectItem>
+                    <SelectItem value="Wisata Alam">Wisata Alam</SelectItem>
+                    <SelectItem value="Wisata Kuliner">Wisata Kuliner</SelectItem>
+                    <SelectItem value="Wisata Budaya">Wisata Budaya</SelectItem>
+                    <SelectItem value="Wisata Buatan">Wisata Buatan</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

@@ -14,6 +14,7 @@ import useSWR from 'swr';
 interface WisataAlam {
   id: number;
   nama: string;
+  category: string;
   lokasi: {
     lat: string;
     long: string;
@@ -52,6 +53,7 @@ export default function DataWisata() {
   const wisata = data?.data?.map((item: any) => ({
     id: item.id,
     nama: item.name,
+    category: item.category,
     lokasi: {
       lat: item.location.latitude,
       long: item.location.longitude,
@@ -121,7 +123,7 @@ export default function DataWisata() {
             <TableRow>
               <TableHead className="w-[100px]">Gambar</TableHead>
               <TableHead className="text-center">Nama</TableHead>
-              <TableHead className="text-center">Lokasi</TableHead>
+              <TableHead className="text-center">Kategori</TableHead>
               <TableHead className="text-center">Deskripsi</TableHead>
               <TableHead className="text-center">Aksi</TableHead>
             </TableRow>
@@ -134,11 +136,7 @@ export default function DataWisata() {
                     <img src={import.meta.env.VITE_BASE_URL + item.image[0]} alt={item.nama} className="w-20 h-16 object-cover rounded-md" />
                   </TableCell>
                   <TableCell className="text-center">{item.nama}</TableCell>
-                  <TableCell className="text-center">
-                    <a href={item.lokasi.gmaps} target="_blank" className="text-sm py-1 px-2 rounded-md bg-blue-500 text-white">
-                      Lihat lokasi
-                    </a>
-                  </TableCell>
+                  <TableCell className="text-center">{item.category}</TableCell>
                   <TableCell className="text-center">{item.deskripsiPendek}</TableCell>
                   <TableCell>
                     <div className="flex gap-2 justify-center">

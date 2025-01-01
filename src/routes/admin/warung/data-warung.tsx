@@ -28,6 +28,7 @@ export default function DataWarung() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWarung, setSelectedWarung] = useState<Warung | null>(null);
+  const [openDialog, setOpenDialog] = useState(false);
 
   const { data, error, mutate } = useSWR<Warung[]>(`${import.meta.env.VITE_BASE_URL}/api/kuliner/warung?page=${currentPage}&limit=10`, fetcher);
 
@@ -88,6 +89,7 @@ export default function DataWarung() {
       toast.error('Terjadi kesalahan saat menambah data');
     } finally {
       setIsLoading(false);
+      setOpenDialog(false);
     }
   };
 
@@ -162,7 +164,7 @@ export default function DataWarung() {
         <div className="flex justify-between w-[60rem]">
           <Input placeholder="Search..." className="w-96" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
 
-          <Dialog>
+          <Dialog open={openDialog} onOpenChange={setOpenDialog}>
             <DialogTrigger asChild>
               <Button>Tambah</Button>
             </DialogTrigger>

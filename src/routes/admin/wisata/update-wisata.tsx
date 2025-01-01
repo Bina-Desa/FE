@@ -1,8 +1,6 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -12,8 +10,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { SearchControl } from '../components/search-place';
 import { toast } from 'sonner';
 import { LoaderCircle } from 'lucide-react';
-import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 
 interface LocationInfo {
   latitude: number;
@@ -33,11 +31,10 @@ type Wisata = {
   fasilitas: string[];
 };
 
-export default function UpdateWisata() {
+export default function CreateWisata() {
   const { id } = useParams<{ id: string }>();
-
   const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
-  const [mapCenter, setMapCenter] = useState<[number, number]>([-6.9999568, 113.3793574]);
+  const [mapCenter] = useState<[number, number]>([-6.9999568, 113.3793574]);
   const [fasilitas, setFasilitas] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
@@ -52,6 +49,7 @@ export default function UpdateWisata() {
       try {
         const response = await axios.get(import.meta.env.VITE_BASE_URL + `/api/destinations/${id}`);
         const data = response.data.data;
+
         setValue('name', data.name);
         setValue('category', data.category);
         setValue('latitude', data.latitude);
@@ -62,18 +60,15 @@ export default function UpdateWisata() {
         setFasilitas(JSON.parse(data.fasilitas));
         setImageFiles(JSON.parse(data.image));
 
-        const imageUrls = JSON.parse(data.image).map((img:any) => `${import.meta.env.VITE_BASE_URL}${img}`);
-        setImagePreview(imageUrls);
-
+        setImagePreview(JSON.parse(data.image).map((image: string) => import.meta.env.VITE_BASE_URL + image));
         setLocationInfo({ latitude: data.latitude, longitude: data.longitude, label: data.gmaps });
-        setMapCenter([parseFloat(data.latitude), parseFloat(data.longitude)]);
       } catch (error) {
         console.error('Error fetching data:', error);
+        toast.error('Failed to fetch destination data');
       }
     }
-
     fetchData();
-  }, [setValue]);
+  }, [id, setValue]);
 
   const onSubmit: SubmitHandler<Wisata> = async (data) => {
     setIsLoading(true);
@@ -95,7 +90,7 @@ export default function UpdateWisata() {
 
       const token = sessionStorage.getItem('authToken');
 
-      const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/destinations/${id}`, {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/destinations', {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -104,7 +99,7 @@ export default function UpdateWisata() {
       });
 
       if (response.ok) {
-        toast.success('Data berhasil diupdate.');
+        toast.success('Data berhasil ditambahkan.');
         setTimeout(() => {
           window.location.href = '/admin/wisata';
         }, 1000);
@@ -112,7 +107,7 @@ export default function UpdateWisata() {
         throw new Error('Failed to add data');
       }
     } catch (error) {
-      toast.error('Data gagal diupdate.');
+      toast.error('Data gagal ditambahkan.');
       console.error('Error:', error);
     } finally {
       setIsLoading(false);
@@ -173,20 +168,15 @@ export default function UpdateWisata() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Kategori</label>
-                <Select>
+                <Select onValueChange={(value) => setValue('category', value)}>
                   <SelectTrigger>
                     <SelectValue placeholder="Pilih kategori wisata" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="Wisata Alam" onClick={() => setValue('category', 'Wisata Alam')}>
-                      Wisata Alam
-                    </SelectItem>
-                    <SelectItem value="Wisata Kuliner" onClick={() => setValue('category', 'Wisata Kuliner')}>
-                      Wisata Kuliner
-                    </SelectItem>
-                    <SelectItem value="Wisata Budaya" onClick={() => setValue('category', 'Wisata Budaya')}>
-                      Wisata Budaya
-                    </SelectItem>
+                    <SelectItem value="Wisata Alam">Wisata Alam</SelectItem>
+                    <SelectItem value="Wisata Kuliner">Wisata Kuliner</SelectItem>
+                    <SelectItem value="Wisata Budaya">Wisata Budaya</SelectItem>
+                    <SelectItem value="Wisata Buatan">Wisata Buatan</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -267,7 +257,7 @@ export default function UpdateWisata() {
             </div>
           </div>
           <Button className="w-full mt-4 mb-10" type="submit" disabled={isLoading}>
-            {isLoading ? <LoaderCircle className="animate-spin" /> : 'Update Data'}
+            {isLoading ? <LoaderCircle className="animate-spin" /> : 'Tambah Data'}
           </Button>
         </form>
       </div>
