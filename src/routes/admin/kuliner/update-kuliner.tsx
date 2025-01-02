@@ -24,7 +24,8 @@ type Product = {
 
 export default function UpdateKuliner() {
   const { id } = useParams();
-  const [imageFiles, setImageFiles] = useState<File[]>([]);
+  const [oldImages, setOldImages] = useState<string[]>([]);
+  const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWarungId, setSelectedWarungId] = useState('');
   const [imagePreview, setImagePreview] = useState<string[]>([]);
@@ -32,7 +33,7 @@ export default function UpdateKuliner() {
   const { register, handleSubmit, setValue, watch } = useForm<Product>();
   const selectedCategory = watch('category');
 
-  const { data: warung } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/kuliner/warung`, fetcher);
+  const { data: warung } = useSWR(import.meta.env.VITE_BASE_URL + '/api/kuliner/warung', fetcher);
 
   useEffect(() => {
     async function fetchData() {
@@ -43,7 +44,9 @@ export default function UpdateKuliner() {
         setValue('category', data.category);
         setValue('description', data.description);
         setValue('price', data.price);
-        setImageFiles(JSON.parse(data.image));
+        const parsedImages = JSON.parse(data.image).filter((item: any) => typeof item === 'string');
+        setOldImages(parsedImages);
+        setImagePreview(parsedImages.map((image: string) => import.meta.env.VITE_BASE_URL + image));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -52,36 +55,53 @@ export default function UpdateKuliner() {
     fetchData();
   }, [setValue, id]);
 
-  const handleWarungSelect = (warungName: string) => {
-    const selectedWarung = warung?.find((item: any) => item.name === warungName);
-    if (selectedWarung) {
-      setSelectedWarungId(selectedWarung.id);
-      setValue('warungId', selectedWarung.id);
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files).slice(0, 2 - (oldImages.length + newImageFiles.length));
+      const validFiles = fileArray.filter((file) => file instanceof File);
+      setNewImageFiles((prev) => [...prev, ...validFiles]);
+      const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
+      setImagePreview((prev) => [...prev, ...newPreviews]);
     }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    if (index < oldImages.length) {
+      setOldImages((prev) => prev.filter((_, i) => i !== index));
+    } else {
+      const newIndex = index - oldImages.length;
+      setNewImageFiles((prev) => prev.filter((_, i) => i !== newIndex));
+      URL.revokeObjectURL(imagePreview[index]);
+    }
+    setImagePreview((prev) => prev.filter((_, i) => i !== index));
   };
 
   const onSubmit: SubmitHandler<Product> = async (data) => {
     setIsLoading(true);
 
     try {
+      const token = sessionStorage.getItem('authToken');
       const formData = new FormData();
 
       formData.append('name', data.name);
       formData.append('price', data.price);
       formData.append('description', data.description);
-      formData.append('warungId', selectedWarungId);
       formData.append('category', data.category);
-      imageFiles.forEach((file) => {
+      formData.append('warungId', selectedWarungId);
+
+      const combinedImages = [...oldImages];
+      formData.append('image', JSON.stringify(combinedImages));
+
+      newImageFiles.forEach((file) => {
         formData.append('image', file);
       });
 
-      for (const [key, value] of formData.entries()) {
-        console.log(`${key}:`, value);
-      }
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
 
-      const token = sessionStorage.getItem('authToken');
-
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/kuliner/product/${id}`, {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/kuliner/product/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -102,32 +122,20 @@ export default function UpdateKuliner() {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files).slice(0, 2 - imageFiles.length);
-
-      setImageFiles((prevFiles) => [...prevFiles, ...fileArray]);
-
-      const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
-      setImagePreview((prev) => [...prev, ...newPreviews]);
-    }
-  };
-
-  const handleRemoveImage = (index: number) => {
-    setImageFiles((prev) => prev.filter((_, i) => i !== index));
-    setImagePreview((prev) => {
-      URL.revokeObjectURL(prev[index]);
-      return prev.filter((_, i) => i !== index);
-    });
-  };
-
   const getSelectedWarungName = () => {
     if (warung && selectedWarungId) {
       const selected = warung.find((item: any) => item.id === selectedWarungId);
       return selected?.name || '';
     }
     return '';
+  };
+
+  const handleWarungSelect = (warungName: string) => {
+    const selectedWarung = warung?.find((item: any) => item.name === warungName);
+    if (selectedWarung) {
+      setSelectedWarungId(selectedWarung.id);
+      setValue('warungId', selectedWarung.id);
+    }
   };
 
   return (
@@ -179,7 +187,7 @@ export default function UpdateKuliner() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Gambar (max 2)</label>
-                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={imageFiles.length >= 2} />
+                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={oldImages.length + newImageFiles.length >= 2} />
                 <div className="flex gap-2 flex-wrap">
                   {imagePreview.map((preview, index) => (
                     <div key={index} className="relative">
