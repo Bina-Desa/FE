@@ -1,7 +1,8 @@
-import { CalendarDays, HandPlatter, Home, MapPinHouse, Store  } from 'lucide-react';
+import { ArrowRight, CalendarDays, HandPlatter, Home, MapPinHouse, Store } from 'lucide-react';
 
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { useLocation } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 // Menu items.
 const items = [
@@ -34,6 +35,12 @@ const items = [
 
 export function AppSidebar() {
   const location = useLocation();
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken');
+    window.location.href = '/';
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -55,6 +62,11 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <Button onClick={handleLogout} variant={'destructive'}>
+          Logout <ArrowRight />
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   );
 }
