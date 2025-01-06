@@ -173,7 +173,7 @@ export default function BerandaSection() {
 const faq = [
   {
     question: 'Apa itu Desa Wisata Kebon Ayu?',
-    answer: 'Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Timur. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.',
+    answer: 'Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Barat. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.',
   },
   {
     question: 'Apa saja tempat wisata yang ada di Desa Wisata Kebon Ayu?',
