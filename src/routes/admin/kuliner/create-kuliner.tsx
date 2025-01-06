@@ -17,7 +17,6 @@ type Product = {
   description: string;
   image: string[];
   warungId: string;
-  category: string;
 };
 
 export default function CreateKuliner() {
@@ -26,8 +25,7 @@ export default function CreateKuliner() {
   const [isLoading, setIsLoading] = useState(false);
   const [selectedWarungId, setSelectedWarungId] = useState('');
 
-  const { register, handleSubmit, setValue, watch } = useForm<Product>();
-  const selectedCategory = watch('category');
+  const { register, handleSubmit, setValue } = useForm<Product>();
 
   const { data: warung } = useSWR(import.meta.env.VITE_BASE_URL + '/api/kuliner/warung', fetcher);
 
@@ -48,8 +46,7 @@ export default function CreateKuliner() {
       formData.append('name', data.name);
       formData.append('price', data.price);
       formData.append('description', data.description);
-      formData.append('warungId', selectedWarungId); // Use the stored warungId
-      formData.append('category', data.category);
+      formData.append('warungId', selectedWarungId);
       imageFiles.forEach((file) => {
         formData.append('image', file);
       });
@@ -116,18 +113,6 @@ export default function CreateKuliner() {
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Deskripsi</label>
                 <Textarea {...register('description')} />
-              </div>
-              <div className="flex flex-col gap-2">
-                <label htmlFor="">Kategori</label>
-                <Select onValueChange={(value) => setValue('category', value)} value={selectedCategory}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Pilih Kategori" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Makanan">Makanan</SelectItem>
-                    <SelectItem value="Minuman">Minuman</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Warung</label>
