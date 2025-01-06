@@ -24,6 +24,7 @@ import UpdateKuliner from './routes/admin/kuliner/update-kuliner.tsx';
 import DataWarung from './routes/admin/warung/data-warung.tsx';
 import DataAcara from './routes/admin/acara/data-acara.tsx';
 import CreateAcara from './routes/admin/acara/create-acara.tsx';
+import UpdateAcara from './routes/admin/acara/update-acara.tsx';
 
 const router = createBrowserRouter([
   {
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
         element: <DataAcara />,
       },
       { path: 'acara/create', element: <CreateAcara /> },
-      { path: 'kuliner/update/:id', element: <UpdateKuliner /> },
+      { path: 'acara/update/:id', element: <UpdateAcara /> },
     ],
   },
 ]);
