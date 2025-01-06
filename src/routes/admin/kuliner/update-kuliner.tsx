@@ -45,7 +45,7 @@ export default function UpdateKuliner() {
         setValue('description', data.description);
         setValue('price', data.price);
         const parsedImages = JSON.parse(data.image).filter((item: any) => typeof item === 'string');
-        setOldImages(parsedImages);
+        setOldImages(parsedImages);        
         setImagePreview(parsedImages.map((image: string) => import.meta.env.VITE_BASE_URL + image));
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -65,6 +65,7 @@ export default function UpdateKuliner() {
       setImagePreview((prev) => [...prev, ...newPreviews]);
     }
   };
+  
 
   const handleRemoveImage = (index: number) => {
     if (index < oldImages.length) {
@@ -79,28 +80,24 @@ export default function UpdateKuliner() {
 
   const onSubmit: SubmitHandler<Product> = async (data) => {
     setIsLoading(true);
-
+  
     try {
       const token = sessionStorage.getItem('authToken');
+      const combinedImages = [
+        ...oldImages, // Path gambar lama
+        ...newImageFiles.map((file) => `/C:/Users/MATRIX COMPUTER/Pictures/Desain Baju/${file.name}`), // Path gambar baru
+      ];
+  
       const formData = new FormData();
-
       formData.append('name', data.name);
       formData.append('price', data.price);
       formData.append('description', data.description);
       formData.append('category', data.category);
       formData.append('warungId', selectedWarungId);
-
-      const combinedImages = [...oldImages];
+  
+      // Gabungkan semua path gambar sebagai string JSON
       formData.append('image', JSON.stringify(combinedImages));
-
-      newImageFiles.forEach((file) => {
-        formData.append('image', file);
-      });
-
-      formData.forEach((value, key) => {
-        console.log(key, value);
-      });
-
+  
       const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/kuliner/product/${id}`, {
         method: 'PUT',
         headers: {
@@ -108,7 +105,7 @@ export default function UpdateKuliner() {
         },
         body: formData,
       });
-
+  
       if (response.ok) {
         toast.success('Data berhasil diperbarui.');
       } else {
@@ -121,6 +118,8 @@ export default function UpdateKuliner() {
       setIsLoading(false);
     }
   };
+  
+
 
   const getSelectedWarungName = () => {
     if (warung && selectedWarungId) {
