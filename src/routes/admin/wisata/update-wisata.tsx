@@ -42,7 +42,13 @@ export default function CreateWisata() {
 
   const fasilitasOptions = ['Kamar Mandi', 'WiFi', 'Tempat Sholat', 'Spot Foto', 'Tempat Makan'];
 
-  const { register, handleSubmit, setValue } = useForm<Wisata>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<Wisata>();
 
   useEffect(() => {
     async function fetchData() {
@@ -90,7 +96,11 @@ export default function CreateWisata() {
 
       const token = sessionStorage.getItem('authToken');
 
-      const response = await fetch(import.meta.env.VITE_BASE_URL + '/api/destinations', {
+      formData.forEach((value, key) => {
+        console.log(key, value);
+      });
+
+      const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/destinations/${id}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -128,16 +138,18 @@ export default function CreateWisata() {
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files).slice(0, 2 - imageFiles.length);
-
-      // Store the actual files
+  
+      if (fileArray.length === 0) {
+        toast.error('Maksimal 2 gambar.');
+        return;
+      }
+  
       setImageFiles((prevFiles) => [...prevFiles, ...fileArray]);
-
-      // Create preview URLs
       const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
       setImagePreview((prev) => [...prev, ...newPreviews]);
     }
   };
-
+  
   const handleRemoveImage = (index: number) => {
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
     setImagePreview((prev) => {
@@ -182,8 +194,18 @@ export default function CreateWisata() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Deskripsi Singkat</label>
-                <Textarea {...register('shortdeskripsi')} />
+                <Textarea
+                  {...register('shortdeskripsi', {
+                    validate: (value) => {
+                      const wordCount = value.trim().split(/\s+/).length;
+                      return wordCount <= 25 || 'Deskripsi singkat maksimal 25 kata.';
+                    },
+                  })}
+                />
+                <p className="text-sm text-gray-500">{watch('shortdeskripsi')?.trim().split(/\s+/).length || 0} / 25 kata</p>
+                {errors.shortdeskripsi && <p className="text-red-500 text-sm">{errors.shortdeskripsi.message}</p>}
               </div>
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Deskripsi Lengkap</label>
                 <Textarea {...register('longdeskripsi')} />
@@ -257,7 +279,7 @@ export default function CreateWisata() {
             </div>
           </div>
           <Button className="w-full mt-4 mb-10" type="submit" disabled={isLoading}>
-            {isLoading ? <LoaderCircle className="animate-spin" /> : 'Tambah Data'}
+            {isLoading ? <LoaderCircle className="animate-spin" /> : 'Update Data'}
           </Button>
         </form>
       </div>

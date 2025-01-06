@@ -39,7 +39,13 @@ export default function CreateWisata() {
 
   const fasilitasOptions = ['Kamar Mandi', 'WiFi', 'Tempat Sholat', 'Spot Foto', 'Tempat Makan'];
 
-  const { register, handleSubmit, setValue } = useForm<Wisata>();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<Wisata>();
 
   const onSubmit: SubmitHandler<Wisata> = async (data) => {
     setIsLoading(true);
@@ -158,8 +164,18 @@ export default function CreateWisata() {
               </div>
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Deskripsi Singkat</label>
-                <Textarea {...register('shortdeskripsi')} />
+                <Textarea
+                  {...register('shortdeskripsi', {
+                    validate: (value) => {
+                      const wordCount = value.trim().split(/\s+/).length;
+                      return wordCount <= 25 || 'Deskripsi singkat maksimal 25 kata.';
+                    },
+                  })}
+                />
+                <p className="text-sm text-gray-500">{watch('shortdeskripsi')?.trim().split(/\s+/).length || 0} / 25 kata</p>
+                {errors.shortdeskripsi && <p className="text-red-500 text-sm">{errors.shortdeskripsi.message}</p>}
               </div>
+
               <div className="flex flex-col gap-2">
                 <label htmlFor="">Deskripsi Lengkap</label>
                 <Textarea {...register('longdeskripsi')} />
