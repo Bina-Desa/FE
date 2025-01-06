@@ -31,13 +31,14 @@ type Wisata = {
   fasilitas: string[];
 };
 
-export default function CreateWisata() {
+export default function UpdateWisata() {
   const { id } = useParams<{ id: string }>();
   const [locationInfo, setLocationInfo] = useState<LocationInfo | null>(null);
   const [mapCenter] = useState<[number, number]>([-6.9999568, 113.3793574]);
   const [fasilitas, setFasilitas] = useState<string[]>([]);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
+  const [apiImages, setApiImages] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const fasilitasOptions = ['Kamar Mandi', 'WiFi', 'Tempat Sholat', 'Spot Foto', 'Tempat Makan'];
@@ -64,10 +65,16 @@ export default function CreateWisata() {
         setValue('shortdeskripsi', data.shortdeskripsi);
         setValue('longdeskripsi', data.longdeskripsi);
         setFasilitas(JSON.parse(data.fasilitas));
-        setImageFiles(JSON.parse(data.image));
-
-        setImagePreview(JSON.parse(data.image).map((image: string) => import.meta.env.VITE_BASE_URL + image));
         setLocationInfo({ latitude: data.latitude, longitude: data.longitude, label: data.gmaps });
+
+        let parsedImages = [];
+        try {
+          parsedImages = JSON.parse(data.image);
+        } catch {
+          parsedImages = Array.isArray(data.image) ? data.image : [];
+        }
+
+        setApiImages(parsedImages.map((image: string) => (image.startsWith('http') ? image : import.meta.env.VITE_BASE_URL + image)));
       } catch (error) {
         console.error('Error fetching data:', error);
         toast.error('Failed to fetch destination data');
@@ -75,6 +82,37 @@ export default function CreateWisata() {
     }
     fetchData();
   }, [id, setValue]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+
+    if (files) {
+      const fileArray = Array.from(files);
+      const validFiles = fileArray.filter((file) => file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024);
+
+      if (imageFiles.length + validFiles.length > 2) {
+        toast.error('Maksimal 2 gambar dengan ukuran file maksimal 5MB.');
+        return;
+      }
+
+      if (imagePreview.length === 0) {
+        setApiImages([]);
+      }
+
+      const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
+
+      setImageFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      setImagePreview((prevPreviews) => [...prevPreviews, ...newPreviews]);
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setImagePreview((prevPreview) => {
+      URL.revokeObjectURL(prevPreview[index]);
+      return prevPreview.filter((_, i) => i !== index);
+    });
+  };
 
   const onSubmit: SubmitHandler<Wisata> = async (data) => {
     setIsLoading(true);
@@ -90,9 +128,16 @@ export default function CreateWisata() {
       formData.append('shortdeskripsi', data.shortdeskripsi);
       formData.append('longdeskripsi', data.longdeskripsi);
       formData.append('fasilitas', JSON.stringify(fasilitas));
-      imageFiles.forEach((file) => {
-        formData.append('image', file);
-      });
+
+      if (imageFiles.length > 0) {
+        imageFiles.forEach((file) => {
+          formData.append('image', file);
+        });
+      } else {
+        apiImages.forEach((image) => {
+          formData.append('image', image);
+        });
+      }
 
       const token = sessionStorage.getItem('authToken');
 
@@ -132,31 +177,6 @@ export default function CreateWisata() {
 
   const handleRemoveFasilitas = (index: number) => {
     setFasilitas(fasilitas.filter((_, i) => i !== index));
-  };
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const fileArray = Array.from(files).slice(0, 2 - imageFiles.length);
-  
-      if (fileArray.length === 0) {
-        toast.error('Maksimal 2 gambar.');
-        return;
-      }
-  
-      setImageFiles((prevFiles) => [...prevFiles, ...fileArray]);
-      const newPreviews = fileArray.map((file) => URL.createObjectURL(file));
-      setImagePreview((prev) => [...prev, ...newPreviews]);
-    }
-  };
-  
-  const handleRemoveImage = (index: number) => {
-    setImageFiles((prev) => prev.filter((_, i) => i !== index));
-    setImagePreview((prev) => {
-      // Revoke the URL to prevent memory leaks
-      URL.revokeObjectURL(prev[index]);
-      return prev.filter((_, i) => i !== index);
-    });
   };
 
   const toggleFasilitasOption = (option: string) => {
@@ -211,11 +231,19 @@ export default function CreateWisata() {
                 <Textarea {...register('longdeskripsi')} />
               </div>
               <div className="flex flex-col gap-2">
-                <label htmlFor="">Gambar (max 2)</label>
-                <Input type="file" multiple accept=".png, .jpeg, .jpg" onChange={handleImageUpload} disabled={imageFiles.length >= 2} />
+                <label htmlFor="images">Gambar (max 2)</label>
+                <Input id="images" type="file" multiple accept="image/*" onChange={handleImageUpload} disabled={imageFiles.length >= 2} />
                 <div className="flex gap-2 flex-wrap">
+                  {imageFiles.length === 0 &&
+                    apiImages.map((image, index) => (
+                      <div key={`api-${index}`} className="relative">
+                        <img src={image} alt={`API Image ${index}`} className="h-20 w-20 object-cover rounded" />
+                      </div>
+                    ))}
+
+                  {/* Show new image previews */}
                   {imagePreview.map((preview, index) => (
-                    <div key={index} className="relative">
+                    <div key={`new-${index}`} className="relative">
                       <img src={preview} alt={`Preview ${index}`} className="h-20 w-20 object-cover rounded" />
                       <span className="absolute top-0 right-0 text-sm bg-red-500 cursor-pointer hover:bg-red-600 rounded-full text-white px-2 py-0.5" onClick={() => handleRemoveImage(index)}>
                         X
@@ -223,6 +251,7 @@ export default function CreateWisata() {
                     </div>
                   ))}
                 </div>
+                <p className="font-medium text-sm">{imageFiles.length}/2 Gambar baru</p>
               </div>
             </div>
             <div className="w-full flex flex-col gap-3">

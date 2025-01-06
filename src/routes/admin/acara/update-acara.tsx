@@ -1,10 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import axios from 'axios';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -22,78 +18,73 @@ interface Acara {
 
 export default function UpdateAcara() {
   const { id } = useParams();
-  const [oldImages, setOldImages] = useState<string[]>([]);
-  const [newImageFiles, setNewImageFiles] = useState<File[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
+  const [apiImages, setApiImages] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { register, handleSubmit, setValue } = useForm<Acara>();
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await axios.get(import.meta.env.VITE_BASE_URL + `/api/event/${id}`);
-        const data = response.data.data;
-        setValue('title', data.title);
-        setValue('description', data.description);
-        setValue('location', data.location);
-        setValue('date', data.date);
+        const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/event/${id}`);
+        const data = await response.json();
 
-        // Handle image data
-        let parsedImages = [];
-        try {
-          parsedImages = JSON.parse(data.image);
-        } catch {
-          parsedImages = Array.isArray(data.image) ? data.image : [];
+        if (data.data) {
+          setValue('title', data.data.title);
+          setValue('description', data.data.description);
+          setValue('location', data.data.location);
+          setValue('date', data.data.date);
+
+          let parsedImages = [];
+          try {
+            parsedImages = JSON.parse(data.data.image);
+          } catch {
+            parsedImages = Array.isArray(data.data.image) ? data.data.image : [];
+          }
+
+          // Store API images separately
+          setApiImages(parsedImages.map((image: string) => (image.startsWith('http') ? image : import.meta.env.VITE_BASE_URL + image)));
         }
-
-        setOldImages(parsedImages);
-        setImagePreview(parsedImages.map((image: string) => (image.startsWith('http') ? image : import.meta.env.VITE_BASE_URL + image)));
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error:', error);
         toast.error('Failed to fetch event data');
       }
     }
 
     fetchData();
-  }, [setValue, id]);
+  }, [id, setValue]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+
     if (files) {
-      const maxNewImages = 2 - (oldImages.length + newImageFiles.length);
-      if (maxNewImages <= 0) {
-        toast.error('Maximum 2 images allowed');
+      const fileArray = Array.from(files);
+      const validFiles = fileArray.filter((file) => file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024);
+
+      if (imageFiles.length + validFiles.length > 2) {
+        toast.error('Maksimal 2 gambar dengan ukuran file maksimal 5MB.');
         return;
       }
 
-      const fileArray = Array.from(files).slice(0, maxNewImages);
-      const validFiles = fileArray.filter((file) => file.type.startsWith('image/') && file.size <= 5 * 1024 * 1024);
-
-      if (validFiles.length !== fileArray.length) {
-        toast.error('Some files were skipped. Please use images under 5MB');
+      if (imagePreview.length === 0) {
+        setApiImages([]);
       }
 
-      setNewImageFiles((prev) => [...prev, ...validFiles]);
-
-      // Create and add preview URLs
       const newPreviews = validFiles.map((file) => URL.createObjectURL(file));
-      setImagePreview((prev) => [...prev, ...newPreviews]);
+
+      setImageFiles((prevFiles) => [...prevFiles, ...validFiles]);
+      setImagePreview((prevPreviews) => [...prevPreviews, ...newPreviews]);
     }
   };
 
   const handleRemoveImage = (index: number) => {
-    if (index < oldImages.length) {
-      // Removing an old image
-      setOldImages((prev) => prev.filter((_, i) => i !== index));
-      setImagePreview((prev) => prev.filter((_, i) => i !== index));
-    } else {
-      // Removing a new image
-      const newIndex = index - oldImages.length;
-      setNewImageFiles((prev) => prev.filter((_, i) => i !== newIndex));
-      URL.revokeObjectURL(imagePreview[index]); // Clean up the URL
-      setImagePreview((prev) => prev.filter((_, i) => i !== index));
-    }
+    setImageFiles((prevFiles) => prevFiles.filter((_, i) => i !== index));
+    setImagePreview((prevPreview) => {
+      URL.revokeObjectURL(prevPreview[index]);
+      return prevPreview.filter((_, i) => i !== index);
+    });
   };
 
   const onSubmit: SubmitHandler<Acara> = async (data) => {
@@ -103,19 +94,20 @@ export default function UpdateAcara() {
       const token = sessionStorage.getItem('authToken');
       const formData = new FormData();
 
-      // Append basic data
       formData.append('title', data.title);
       formData.append('description', data.description);
       formData.append('location', data.location);
       formData.append('date', data.date);
 
-      // Append old images
-      formData.append('oldImages', JSON.stringify(oldImages));
-
-      // Append new image files
-      newImageFiles.forEach((file, index) => {
-        formData.append(`newImages`, file);
-      });
+      if (imageFiles.length > 0) {
+        imageFiles.forEach((file) => {
+          formData.append('image', file);
+        });
+      } else {
+        apiImages.forEach((image) => {
+          formData.append('image', image);
+        });
+      }
 
       const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/event/${id}`, {
         method: 'PUT',
@@ -126,7 +118,7 @@ export default function UpdateAcara() {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update event');
+        throw new Error('Gagal Update data');
       }
 
       const result = await response.json();
@@ -137,7 +129,7 @@ export default function UpdateAcara() {
       }
     } catch (error) {
       console.error('Error:', error);
-      toast.error('Failed to update event');
+      toast.error('Gagal Update data');
     } finally {
       setIsLoading(false);
     }
@@ -161,23 +153,37 @@ export default function UpdateAcara() {
               </div>
 
               <div className="flex flex-col gap-2">
+                <label htmlFor="location">Location</label>
+                <Input id="location" placeholder="Masukan lokasi" className="w-full" {...register('location', { required: true })} />
+              </div>
+
+              <div className="flex flex-col gap-2">
                 <label htmlFor="date">Tanggal</label>
                 <Input id="date" {...register('date')} type="date" />
               </div>
 
               <div className="flex flex-col gap-2">
                 <label htmlFor="images">Gambar (max 2)</label>
-                <Input id="images" type="file" multiple accept="image/*" onChange={handleImageUpload} disabled={oldImages.length + newImageFiles.length >= 2} />
+                <Input id="images" type="file" multiple accept="image/*" onChange={handleImageUpload} disabled={imageFiles.length >= 2} />
                 <div className="flex gap-2 flex-wrap">
+                  {imageFiles.length === 0 &&
+                    apiImages.map((image, index) => (
+                      <div key={`api-${index}`} className="relative">
+                        <img src={image} alt={`API Image ${index}`} className="h-20 w-20 object-cover rounded" />
+                      </div>
+                    ))}
+
+                  {/* Show new image previews */}
                   {imagePreview.map((preview, index) => (
-                    <div key={index} className="relative">
-                      <img src={preview} alt={`Preview ${index + 1}`} className="h-20 w-20 object-cover rounded" />
-                      <button type="button" className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600" onClick={() => handleRemoveImage(index)}>
-                        ×
-                      </button>
+                    <div key={`new-${index}`} className="relative">
+                      <img src={preview} alt={`Preview ${index}`} className="h-20 w-20 object-cover rounded" />
+                      <span className="absolute top-0 right-0 text-sm bg-red-500 cursor-pointer hover:bg-red-600 rounded-full text-white px-2 py-0.5" onClick={() => handleRemoveImage(index)}>
+                        X
+                      </span>
                     </div>
                   ))}
                 </div>
+                <p className="font-medium text-sm">{imageFiles.length}/2 Gambar baru</p>
               </div>
             </div>
           </div>
