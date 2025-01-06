@@ -1,8 +1,12 @@
-import { ArrowRight, CalendarDays, HandPlatter, Home, MapPinHouse, Store } from 'lucide-react';
+import { CalendarDays, ChevronRight, HandPlatter, Home, MapPinHouse, Store, User2Icon } from 'lucide-react';
 
-import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
+import { DialogClose } from '@radix-ui/react-dialog';
+import { ChevronDown } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
 
 // Menu items.
 const items = [
@@ -63,9 +67,43 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
-        <Button onClick={handleLogout} variant={'destructive'}>
-          Logout <ArrowRight />
-        </Button>
+        <div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <div className="flex gap-2 border rounded-md p-3 items-center bg-white">
+                <User2Icon />
+                <div>
+                  <p className="text-medium">Admin</p>
+                  <p className="text-xs text-zinc-400">anda login sebagai admin</p>
+                </div>
+                <ChevronDown />
+              </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-max" side="right" align="start">
+              <Dialog>
+                <DialogTrigger className='w-full'>
+                  <Button variant="destructive" className="w-full ">
+                    Logout <ChevronRight />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Logout</DialogTitle>
+                  </DialogHeader>
+                  <DialogDescription>Apakah anda yakin ingin keluar?</DialogDescription>
+                  <DialogFooter>
+                    <Button variant="destructive" onClick={handleLogout}>
+                      Ya
+                    </Button>
+                    <DialogClose asChild>
+                      <Button variant="secondary">Tidak</Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </SidebarFooter>
     </Sidebar>
   );

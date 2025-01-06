@@ -108,7 +108,7 @@ export default function UpdateAcara() {
           formData.append('image', image);
         });
       }
-
+      
       const response = await fetch(import.meta.env.VITE_BASE_URL + `/api/event/${id}`, {
         method: 'PUT',
         headers: {

@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import useSWR from 'swr';
 import { format } from 'date-fns';
+import { IoWarningOutline } from 'react-icons/io5';
 
 interface Acara {
   id: number;
@@ -29,16 +30,22 @@ export default function DataAcara() {
 
   if (error) {
     return (
-      <div className="w-[80rem] h-screen flex items-center justify-center">
-        <p>Gagal memuat data</p>
+      <div className="w-[80vw] mx-auto h-screen flex items-center justify-center">
+        <div className="text-center w-full flex gap-2 justify-center items-center text-red-500">
+          <p className="">Gagal Memuat data</p>
+          <IoWarningOutline />
+        </div>
       </div>
     );
   }
 
   if (!data) {
     return (
-      <div className="w-[80rem] h-screen flex items-center justify-center">
-        <p>Memuat...</p>
+      <div className="w-[80vw] mx-auto h-screen flex items-center justify-center">
+        <div className="text-center w-full flex gap-2 justify-center items-center">
+          <p>Memuat...</p>
+          <LoaderCircle className="animate-spin" />
+        </div>
       </div>
     );
   }
