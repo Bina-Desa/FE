@@ -6,6 +6,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 import { BsShop } from 'react-icons/bs';
 import { MdLocationOn } from 'react-icons/md';
 import { fetcher } from '@/lib/fetcher';
+import { Helmet } from 'react-helmet';
 
 export default function Kuliner() {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -30,6 +31,10 @@ export default function Kuliner() {
 
   return (
     <div className="min-h-screen py-28 bg-gray-100">
+      <Helmet>
+        <title>Desa Wisata Kebon Ayu | Kuliner</title>
+      </Helmet>
+
       <div className="text-center">
         <h1 className="text-center text-3xl font-bold text-gray-800">
           Kuliner <span className="text-green-500">Kebon Ayu</span>

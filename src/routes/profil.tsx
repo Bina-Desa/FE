@@ -1,6 +1,12 @@
+import { Helmet } from "react-helmet";
+
 export default function Profil() {
   return (
     <div className="pt-28">
+      <Helmet>
+        <title>Desa Wisata Kebon Ayu | Profil</title>
+      </Helmet>
+
       <div className="flex items-center flex-col justify-center">
         <p className="font-bold text-3xl">
           Profil <span className="text-green-500">Kebon Ayu</span>

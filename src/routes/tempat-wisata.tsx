@@ -5,6 +5,7 @@ import { IoLocationOutline } from 'react-icons/io5';
 import useSWR from 'swr';
 import { useState } from 'react';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { Helmet } from 'react-helmet';
 
 interface WisataAlam {
   id: number;
@@ -46,6 +47,10 @@ export default function TempatWisata() {
 
   return (
     <div className="min-h-screen py-28">
+      <Helmet>
+        <title>Desa Wisata Kebon Ayu | Tempat Wisata</title>
+      </Helmet>
+
       <div className="text-center">
         <h1 className="text-center text-3xl font-bold">
           Tempat <span className="text-green-500">Wisata</span>

@@ -8,6 +8,7 @@ import { MdLocationOn } from 'react-icons/md';
 import { Calendar } from 'lucide-react';
 import { format } from 'date-fns';
 import { IoIosArrowForward } from 'react-icons/io';
+import { Helmet } from 'react-helmet';
 
 export default function Acara() {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -31,6 +32,10 @@ export default function Acara() {
 
   return (
     <div className="min-h-screen py-28 bg-gray-100">
+      <Helmet>
+        <title>Desa Wisata Kebon Ayu | Acara</title>
+      </Helmet>
+
       <div className="text-center">
         <h1 className="text-center text-3xl font-bold text-gray-800">
           Berbagai <span className="text-green-500">Acara</span>

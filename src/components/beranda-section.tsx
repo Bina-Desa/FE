@@ -156,7 +156,7 @@ export default function BerandaSection() {
           <p className="text-zinc-500">Temukan jawaban dari pertanyaan anda</p>
         </div>
         <div className="max-w-6xl bg-white p-4 rounded-md shadow-md mx-auto my-10 ">
-          <Accordion type="single" collapsible className="w-full">
+          <Accordion type="single" collapsible className="w-full" value="item-0">
             {faq.map((item, index) => (
               <AccordionItem key={index} value={`item-${index}`}>
                 <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>

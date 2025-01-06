@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarouselWrapper from '@/components/ui/image-carousel';
 import { fetcher } from '@/lib/fetcher';
+import { Helmet } from 'react-helmet';
 import { FiExternalLink } from 'react-icons/fi';
 import { IoCheckmarkCircleSharp } from 'react-icons/io5';
 import { useParams } from 'react-router-dom';
@@ -38,6 +39,10 @@ export default function DetailWisata() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-28">
+      <Helmet>
+        <title>Desa Wisata Kebon Ayu | Detail Wisata</title>
+      </Helmet>
+
       <div className="">
         <CarouselWrapper images={wisata?.image} height="[30rem]" />
       </div>

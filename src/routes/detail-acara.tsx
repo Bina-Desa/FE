@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { acaraList } from '@/data/dummyData';
 import { FiCalendar, FiMapPin } from 'react-icons/fi';
+import { Helmet } from 'react-helmet';
 
 export default function DetailAcara() {
   const { id = '0' } = useParams<{ id: string }>();
@@ -16,7 +17,10 @@ export default function DetailAcara() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-28">
-      {/* Gambar Acara */}
+      <Helmet>
+        <title>Desa Wisata Kebon Ayu | Detail Acara</title>
+      </Helmet>
+
       <div>
         <img
           src={acara.image}
