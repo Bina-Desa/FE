@@ -70,7 +70,7 @@ export function AppSidebar() {
         <div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <div className="flex gap-2 border rounded-md p-3 items-center bg-white">
+              <div className="flex gap-2 border rounded-md p-3 items-center bg-white cursor-pointer">
                 <User2Icon />
                 <div>
                   <p className="text-medium">Admin</p>
