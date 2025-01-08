@@ -1,66 +1,66 @@
-import { useParams } from 'react-router-dom';
-import { acaraList } from '@/data/dummyData';
-import { FiCalendar, FiMapPin } from 'react-icons/fi';
+import CarouselWrapper from '@/components/ui/image-carousel';
+import { fetcher } from '@/lib/fetcher';
 import { Helmet } from 'react-helmet';
+import { IoLocation } from 'react-icons/io5';
+import { MdOutlineEvent } from 'react-icons/md';
+import { useParams } from 'react-router-dom';
+import useSWR from 'swr';
 
-export default function DetailAcara() {
-  const { id = '0' } = useParams<{ id: string }>();
-  const acara = acaraList.find((item) => item.id === parseInt(id, 10));
+export default function DetailWisata() {
+  const { id } = useParams<{ id: string }>();
+  const { data, error } = useSWR(id ? `${import.meta.env.VITE_BASE_URL}/api/event/${id}` : null, fetcher);
 
-  if (!acara) {
-    return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <p>Acara tidak ditemukan</p>
-      </div>
-    );
-  }
+  if (error) return <div className="text-red-500">Gagal memuat data.</div>;
+  if (!data) return <div className="text-gray-500">Memuat...</div>;
+
+  const wisata = data.data;
+
+  const title = wisata?.title || 'Nama tidak tersedia';
+  const description = wisata?.description || 'Deskripsi tidak tersedia';
+  const location = wisata?.location || 'Lokasi tidak tersedia';
+  const date = wisata?.date
+    ? new Date(wisata.date).toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+      })
+    : 'Tanggal tidak tersedia';
+  const images = (() => {
+    try {
+      return JSON.parse(wisata.image) || [];
+    } catch {
+      return [];
+    }
+  })();
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-28">
+    <div className="max-w-4xl mx-auto px-4 py-28">
       <Helmet>
-        <title>Desa Wisata Kebon Ayu | Detail Acara</title>
+        <title>Desa Wisata Kebon Ayu | Detail Wisata</title>
       </Helmet>
 
       <div>
-        <img
-          src={acara.image}
-          alt={acara.title}
-          className="w-full h-64 object-cover rounded-lg shadow-md"
-        />
+        <CarouselWrapper images={images} height="[30rem]" />
       </div>
 
-      {/* Detail Acara */}
       <div className="mt-10">
-        <h1 className="font-bold text-2xl">{acara.title}</h1>
-        <div className="flex flex-wrap gap-4 items-center mt-4">
-          {/* Tanggal Acara */}
-          <div className="flex items-center gap-2">
-            <FiCalendar className="text-green-500" />
-            <span className="text-gray-700">{new Date(acara.eventDate).toLocaleDateString('id-ID')}</span>
-          </div>
+        <h1 className="font-bold text-2xl">{title}</h1>
 
-          {/* Lokasi Acara */}
-          <div className="flex items-center gap-2">
-            <FiMapPin className="text-blue-500" />
-            <span className="text-gray-700">{acara.location}</span>
-          </div>
+        <div className="flex gap-6 mt-4 text-sm">
+          <p className="flex items-center gap-2 text-base">
+            <span className="font-semibold text-red-500">
+              <IoLocation />
+            </span>
+            {location}
+          </p>
+          <p className="flex items-center gap-2 text-base">
+            <span className="font-semibold text-green-500">
+              <MdOutlineEvent />
+            </span>
+            {date}
+          </p>
         </div>
-
-        {/* Deskripsi Acara */}
-        <p className="mt-6 text-gray-600">{acara.description}</p>
-
-        {/* Informasi Tambahan (Jika Ada) */}
-       
-      </div>
-
-      {/* Tombol Kembali */}
-      <div className="mt-10">
-        <button
-          onClick={() => window.history.back()}
-          className="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-blue-600"
-        >
-          Kembali
-        </button>
+        <p className="mt-6 leading-relaxed whitespace-pre-wrap">{description}</p>
       </div>
     </div>
   );

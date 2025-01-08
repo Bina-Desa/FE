@@ -38,7 +38,7 @@ export default function DetailWisata() {
   if (!data) return <div className="text-gray-500">Memuat...</div>;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-28">
+    <div className="max-w-4xl mx-auto px-4 py-28">
       <Helmet>
         <title>Desa Wisata Kebon Ayu | Detail Wisata</title>
       </Helmet>
@@ -54,7 +54,7 @@ export default function DetailWisata() {
             Lihat Google Maps <FiExternalLink />
           </a>
         </div>
-        <p className="mt-4">{wisata?.deskripsiPanjang}</p>
+        <p className="mt-4 leading-relaxed whitespace-pre-wrap">{wisata?.deskripsiPanjang}</p>
         <p className="font-bold text-2xl mt-6">Fasilitas</p>
         <div className="flex gap-6 flex-wrap mt-4">
           {wisata?.fasilitas.map((item: string, index: number) => (

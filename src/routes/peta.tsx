@@ -106,7 +106,7 @@ export default function PetaTempatWisata() {
                           </a>
                         </div>
                       </div>
-                      <p className="mt-2 text-justify text-sm">{selectedTempat?.deskripsiPanjang}</p>
+                      <p className="mt-2 text-justify text-sm leading-relaxed whitespace-pre-wrap">{selectedTempat?.deskripsiPanjang}</p>
                       <p className="font-bold text-lg mt-4">Fasilitas</p>
                       <div className="flex flex-wrap gap-4 mt-4">
                         {selectedTempat?.fasilitas?.map((fasilitas: string, index: number) => (
