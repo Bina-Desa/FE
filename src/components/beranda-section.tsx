@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { fetcher } from '@/lib/fetcher';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { BsShop } from 'react-icons/bs';
 import { IoIosArrowForward } from 'react-icons/io';
+import { MdLocationOn } from 'react-icons/md';
 import useSWR from 'swr';
 import HeroSection from './ui/hero-section';
 import CarouselWrapper from './ui/image-carousel';
-import { BsShop } from 'react-icons/bs';
-import { MdLocationOn } from 'react-icons/md';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 interface WisataAlam {
   id: number;
@@ -50,6 +51,12 @@ export default function BerandaSection() {
     },
   }));
 
+  const [openItems, setOpenItems] = useState(['item-0']);
+
+  const toggleItem = (value: any) => {
+    setOpenItems((prev) => (prev.includes(value) ? prev.filter((item) => item !== value) : [...prev, value]));
+  };
+
   return (
     <div className="w-full">
       <Helmet>
@@ -58,6 +65,7 @@ export default function BerandaSection() {
 
       <HeroSection />
 
+      {/* Wisata Section */}
       <div className="max-w-7xl mx-auto px-4 mt-[35rem] max-md:mt-[20rem]">
         <div className="text-center">
           <h1 className="text-4xl font-bold">
@@ -69,12 +77,12 @@ export default function BerandaSection() {
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
           {wisata &&
             wisata.slice(0, 3).map((wisata: WisataAlam, index: number) => (
-              <a href={`tempat-wisata/${wisata.id}`} key={index} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+              <a key={index} href={`tempat-wisata/${wisata.id}`} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <CarouselWrapper images={wisata.image} />
-                <div className="">
+                <div>
                   <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                  <p className="text-md text-zinc-500 mb-4  line-clamp-3">{wisata.deskripsiPendek}</p>
-                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
+                  <p className="text-md text-zinc-500 mb-4 line-clamp-3">{wisata.deskripsiPendek}</p>
+                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1">
                     Lihat Detail <IoIosArrowForward />
                   </a>
                 </div>
@@ -83,13 +91,14 @@ export default function BerandaSection() {
         </div>
 
         <div className="flex max-w-6xl justify-end px-4 mx-auto">
-          <a href="/tempat-wisata" className="flex mb-10 text-sm px-6 py-2 items-center text-green-500  rounded-md w-max justify-center border border-green-500  hover:bg-green-500 hover:text-white transition-all duration-150">
+          <a href="/tempat-wisata" className="flex mb-10 text-sm px-6 py-2 items-center text-green-500 rounded-md w-max justify-center border border-green-500 hover:bg-green-500 hover:text-white transition-all duration-150">
             Lihat Semua Wisata <IoIosArrowForward />
           </a>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 mt-14">
+      {/* Kuliner Section */}
+      <div className="max-w-7xl mx-auto px-4 mt-14" >
         <div className="text-center">
           <h1 className="text-4xl font-bold">
             Kuliner <span className="text-green-500">Khas</span>
@@ -101,12 +110,10 @@ export default function BerandaSection() {
           {products &&
             products.slice(0, 3).map((product: any, index: number) => (
               <div key={index} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <div className="">
-                  <CarouselWrapper images={product.image} />
-                </div>
+                <CarouselWrapper images={product.image} />
                 <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
                 <p className="font-bold">Rp. {product.price}</p>
-                <p className="text-md mt-2  line-clamp-3">{product.description}</p>
+                <p className="text-md mt-2 line-clamp-3">{product.description}</p>
                 <div className="mt-3 flex items-center gap-4">
                   <p className="flex text-md items-center gap-2">
                     <BsShop className="text-green-500" /> {product.warung.name}
@@ -120,14 +127,13 @@ export default function BerandaSection() {
         </div>
 
         <div className="flex max-w-6xl justify-end px-4 mx-auto">
-          <a href="/kuliner" className="flex mb-10 text-sm px-6 py-2 items-center text-green-500  rounded-md w-max justify-center border border-green-500 hover:bg-green-500 hover:text-white transition-all duration-150">
-            Lihat Semua Kuliner
-            <IoIosArrowForward />
+          <a href="/kuliner" className="flex mb-10 text-sm px-6 py-2 items-center text-green-500 rounded-md w-max justify-center border border-green-500 hover:bg-green-500 hover:text-white transition-all duration-150">
+            Lihat Semua Kuliner <IoIosArrowForward />
           </a>
         </div>
       </div>
 
-      <div className="mt-10 px-4">
+      <div className="mt-10 px-4" >
         <div className="bg-white rounded-md shadow-md p-4 max-w-6xl mx-auto flex items-center gap-6 max-md:flex-col">
           <div>
             <img src="https://jadesta.kemenparekraf.go.id/imgpost/118434.jpg" alt="" className="rounded-md" />
@@ -141,7 +147,6 @@ export default function BerandaSection() {
                 Desa Wisata Kebon Ayu adalah sebuah desa wisata yang berada di Kabupaten Lombok Barat, Nusa Tenggara Barat. Desa ini memiliki berbagai tempat wisata yang menarik dan berbagai kuliner khas yang lezat.
               </p>
               <p className="leading-relaxed">Ada berbagai tempat wisata yang menarik di Desa Wisata Kebon Ayu, seperti Wisata Kuliner Tradisional, Agro Wisata Golden Melon, Wisata Jembatan Gantung, dan berbagai tempat wisata lainnya.</p>
-
               <a href="/profil" className="border border-green-500 text-green-500 px-4 py-1.5 rounded-full w-max text-sm mt-6 hover:bg-green-500 hover:text-white transition-all duration-200">
                 Selengkapnya
               </a>
@@ -155,15 +160,19 @@ export default function BerandaSection() {
           <h1 className="text-4xl font-bold">FAQ</h1>
           <p className="text-zinc-500">Temukan jawaban dari pertanyaan anda</p>
         </div>
-        <div className="max-w-6xl bg-white p-4 rounded-md shadow-md mx-auto my-10 ">
-          <Accordion type="single" collapsible className="w-full" value="item-0">
-            {faq.map((item, index) => (
-              <AccordionItem key={index} value={`item-${index}`}>
-                <AccordionTrigger className="text-left">{item.question}</AccordionTrigger>
-                <AccordionContent>{item.answer}</AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+        <div>
+          <div className="max-w-6xl bg-white p-4 rounded-md shadow-md mx-auto my-10">
+            <Accordion className="w-full" type="multiple" value={openItems}>
+              {faq.map((item, index) => (
+                <AccordionItem key={index} value={`item-${index}`}>
+                  <AccordionTrigger className="text-left" onClick={() => toggleItem(`item-${index}`)}>
+                    {item.question}
+                  </AccordionTrigger>
+                  <AccordionContent>{item.answer}</AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
       </div>
     </div>
