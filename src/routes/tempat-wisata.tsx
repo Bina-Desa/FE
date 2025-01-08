@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import CarouselWrapper from '@/components/ui/image-carousel';
-import { fetcher } from '@/lib/fetcher';
-import { IoLocationOutline } from 'react-icons/io5';
-import useSWR from 'swr';
-import { useState } from 'react';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
+import { fetcher } from '@/lib/fetcher';
+import { ChevronRight } from 'lucide-react';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet';
+import useSWR from 'swr';
 
 interface WisataAlam {
   id: number;
@@ -21,14 +21,10 @@ interface WisataAlam {
 
 export default function TempatWisata() {
   const [currentPage, setCurrentPage] = useState(1);
-  const { data, error } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/destinations?page=${currentPage}&limit=10`, fetcher);
+  const { data, error, isLoading } = useSWR(`${import.meta.env.VITE_BASE_URL}/api/destinations?page=${currentPage}&limit=10`, fetcher);
 
   if (error) {
     return <div className="text-center text-red-500">Gagal memuat data.</div>;
-  }
-
-  if (!data) {
-    return <div className="text-center">Memuat...</div>;
   }
 
   const wisata = data?.data?.map((item: any) => ({
@@ -60,18 +56,27 @@ export default function TempatWisata() {
 
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {wisata?.map((wisata: WisataAlam) => (
-            <a href={`tempat-wisata/${wisata.id}`} key={wisata.id} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-              <CarouselWrapper images={wisata.image} />
-              <div>
-                <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" target="_blank" rel="noopener noreferrer">
-                  Lihat Detail <IoLocationOutline />
+          {isLoading
+            ? [1, 2, 3].map((i, index) => (
+                <div key={index} className="p-3 bg-white pb-5 rounded-md animate-pulse">
+                  <div className="h-72 bg-slate-200 rounded-md"></div>
+                  <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
+                  <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
+                  <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+                </div>
+              ))
+            : wisata?.map((wisata: WisataAlam) => (
+                <a href={`tempat-wisata/${wisata.id}`} key={wisata.id} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+                  <CarouselWrapper images={wisata.image} />
+                  <div>
+                    <p className="font-bold text-lg mt-4">{wisata.nama}</p>
+                    <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
+                    <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
+                      Lihat Detail <ChevronRight size={'14'} />
+                    </a>
+                  </div>
                 </a>
-              </div>
-            </a>
-          ))}
+              ))}
         </div>
 
         <Pagination>
