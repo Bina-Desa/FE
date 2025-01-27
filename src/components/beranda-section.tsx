@@ -78,7 +78,7 @@ export default function BerandaSection() {
           {wisata &&
             wisata.slice(0, 3).map((wisata: WisataAlam, index: number) => (
               <a key={index} href={`tempat-wisata/${wisata.id}`} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <CarouselWrapper images={wisata.image} />
+                <CarouselWrapper images={wisata.image} height="80" />
                 <div>
                   <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                   <p className="text-md text-zinc-500 mb-4 line-clamp-3">{wisata.deskripsiPendek}</p>
@@ -98,7 +98,7 @@ export default function BerandaSection() {
       </div>
 
       {/* Kuliner Section */}
-      <div className="max-w-7xl mx-auto px-4 mt-14" >
+      <div className="max-w-7xl mx-auto px-4 mt-14">
         <div className="text-center">
           <h1 className="text-4xl font-bold">
             Kuliner <span className="text-green-500">Khas</span>
@@ -110,7 +110,7 @@ export default function BerandaSection() {
           {products &&
             products.slice(0, 3).map((product: any, index: number) => (
               <div key={index} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <CarouselWrapper images={product.image} />
+                <CarouselWrapper images={product.image} height="80" />
                 <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
                 <p className="font-bold">Rp. {product.price}</p>
                 <p className="text-md mt-2 line-clamp-3">{product.description}</p>
@@ -133,7 +133,7 @@ export default function BerandaSection() {
         </div>
       </div>
 
-      <div className="mt-10 px-4" >
+      <div className="mt-10 px-4">
         <div className="bg-white rounded-md shadow-md p-4 max-w-6xl mx-auto flex items-center gap-6 max-md:flex-col">
           <div>
             <img src="https://jadesta.kemenparekraf.go.id/imgpost/118434.jpg" alt="" className="rounded-md" />

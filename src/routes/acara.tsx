@@ -55,7 +55,7 @@ export default function Acara() {
           : events?.map((event: any) => (
               <div key={event.id} className="bg-white p-3 pb-5 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <div>
-                  <CarouselWrapper images={event.image} />
+                  <CarouselWrapper images={event.image} height='80'/>
                 </div>
                 <p className="mt-4 text-green-500 font-bold text-2xl">{event.title}</p>
                 <p className="text-md mt-2 line-clamp-2 w-full text-md text-zinc-500">{event.description}</p>

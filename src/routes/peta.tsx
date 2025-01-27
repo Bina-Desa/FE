@@ -94,7 +94,7 @@ export default function PetaTempatWisata() {
                 <ScrollArea className="h-[30rem] lg:h-max lg:pb-14 max-w-4xl mt-6 rounded-md px-4 lg:flex-col lg:w-full">
                   <div className="lg:flex lg:gap-8 lg:items-center">
                     <div className="w-full">
-                      <CarouselWrapper images={selectedTempat?.image || []} />
+                      <CarouselWrapper images={selectedTempat?.image || []} height='80'/>
                     </div>
                     <div className="w-full">
                       <div className="flex flex-col gap-2 mt-4">

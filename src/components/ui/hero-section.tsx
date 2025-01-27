@@ -1,9 +1,9 @@
-import { IoIosArrowForward } from 'react-icons/io';
-import { IoLocationOutline } from 'react-icons/io5';
-import { Button } from './button';
-import { useNavigate } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
+import { IoIosArrowForward } from 'react-icons/io';
+import { IoLocationOutline } from 'react-icons/io5';
+import { useNavigate } from 'react-router-dom';
+import { Button } from './button';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -57,9 +57,9 @@ const HeroSection = () => {
 
       <motion.div
         ref={videoRef}
-        className="bg-white p-2 max-w-6xl mx-auto max-lg:mx-4 shadow-md right-0 left-0 rounded-md mt-10 z-10 absolute"
-        style={{ top: 'calc(100vh - 90px)' }}
-        initial={{ opacity: 0 }}
+        className="bg-white p-2 max-w-6xl mx-auto max-lg:mx-4 shadow-md right-0 left-0 rounded-md mt-10 absolute"
+        style={{ top: 'calc(100vh - 90px)', height: '400px' }} 
+        initial={{ opacity: 0 }}  
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.5, ease: 'easeOut' }}
       >

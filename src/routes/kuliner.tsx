@@ -55,7 +55,7 @@ export default function Kuliner() {
           : products.map((product: any) => (
               <div key={product.id} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
                 <div>
-                  <CarouselWrapper images={product.image} />
+                  <CarouselWrapper images={product.image} height='80'/>
                 </div>
                 <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
                 <p className="font-bold">Rp. {product.price}</p>
