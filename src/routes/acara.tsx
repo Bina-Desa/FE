@@ -44,7 +44,7 @@ export default function Acara() {
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
         {isLoading
-          ? [1, 2, 3].map((i, index) => (
+          ? [1, 2, 3].map((_i, index) => (
               <div key={index} className="p-3 pb-5 rounded-md animate-pulse">
                 <div className="h-72 bg-slate-200 rounded-md"></div>
                 <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>

@@ -57,7 +57,7 @@ export default function TempatWisata() {
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
           {isLoading
-            ? [1, 2, 3].map((i, index) => (
+            ? [1, 2, 3].map((_i, index) => (
                 <div key={index} className="p-3 bg-white pb-5 rounded-md animate-pulse">
                   <div className="h-72 bg-slate-200 rounded-md"></div>
                   <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
@@ -67,7 +67,7 @@ export default function TempatWisata() {
               ))
             : wisata?.map((wisata: WisataAlam) => (
                 <a href={`tempat-wisata/${wisata.id}`} key={wisata.id} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                  <CarouselWrapper images={wisata.image} />
+                  <CarouselWrapper images={wisata.image} height='80'/>
                   <div>
                     <p className="font-bold text-lg mt-4">{wisata.nama}</p>
                     <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>

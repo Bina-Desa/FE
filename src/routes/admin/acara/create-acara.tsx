@@ -22,7 +22,7 @@ export default function CreateAcara() {
   const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  const { register, handleSubmit, setValue } = useForm<Acara>();
+  const { register, handleSubmit } = useForm<Acara>();
 
   const onSubmit: SubmitHandler<Acara> = async (data) => {
     setIsLoading(true);
