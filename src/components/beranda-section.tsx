@@ -74,7 +74,7 @@ export default function BerandaSection() {
           <p className="text-zinc-500">Temukan berbagai tempat yang menarik</p>
         </div>
 
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto">
           {wisata &&
             wisata.slice(0, 3).map((wisata: WisataAlam, index: number) => (
               <a key={index} href={`tempat-wisata/${wisata.id}`} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
@@ -106,7 +106,7 @@ export default function BerandaSection() {
           <p className="text-zinc-500">Temukan berbagai makanan yang lezat</p>
         </div>
 
-        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
+        <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto">
           {products &&
             products.slice(0, 3).map((product: any, index: number) => (
               <div key={index} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">

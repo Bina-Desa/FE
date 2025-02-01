@@ -16,7 +16,7 @@ export default function Profil() {
       <div className="px-4">
         <div className="max-w-6xl mx-auto py-6 px-4 bg-white rounded-md my-10 shadow-sm">
           <div className="pb-10">
-            <img src="/images/header.jpg" alt="" className="rounded-md h-[30rem] w-full object-cover" />
+            <img src="/images/header.jpg" alt="" className="rounded-md h-[30rem] max-md:h-[18rem] w-full object-cover" />
           </div>
           <div className="w-full">
             <p>
