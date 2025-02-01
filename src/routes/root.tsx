@@ -21,7 +21,7 @@ export default function Root() {
       )}
       <Footer />
       <a
-        href="https://wa.me/6281234567890"
+        href="https://wa.me/"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-14 right-10 bg-green-500 text-white p-3 rounded-full shadow-lg hover:bg-green-600 transition duration-300 border border-white cursor-pointer z-10"

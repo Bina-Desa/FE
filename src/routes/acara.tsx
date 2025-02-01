@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from 'react';
-import useSWR from 'swr';
 import CarouselWrapper from '@/components/ui/image-carousel';
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination';
 import { fetcher } from '@/lib/fetcher';
-import { MdLocationOn } from 'react-icons/md';
-import { Calendar } from 'lucide-react';
 import { format } from 'date-fns';
-import { IoIosArrowForward } from 'react-icons/io';
+import { Calendar } from 'lucide-react';
+import React from 'react';
 import { Helmet } from 'react-helmet';
+import { IoIosArrowForward } from 'react-icons/io';
+import { MdLocationOn } from 'react-icons/md';
+import useSWR from 'swr';
 
 export default function Acara() {
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -43,55 +43,63 @@ export default function Acara() {
       </div>
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-        {isLoading
-          ? [1, 2, 3].map((_i, index) => (
-              <div key={index} className="p-3 pb-5 rounded-md animate-pulse">
-                <div className="h-72 bg-slate-200 rounded-md"></div>
-                <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
-                <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
-                <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+        {isLoading ? (
+          [1, 2, 3].map((_i, index) => (
+            <div key={index} className="p-3 pb-5 rounded-md animate-pulse">
+              <div className="h-72 bg-slate-200 rounded-md"></div>
+              <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
+              <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
+              <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+            </div>
+          ))
+        ) : events?.length > 0 ? (
+          events?.map((event: any) => (
+            <div key={event.id} className="bg-white p-3 pb-5 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+              <div>
+                <CarouselWrapper images={event.image} height="80" />
               </div>
-            ))
-          : events?.map((event: any) => (
-              <div key={event.id} className="bg-white p-3 pb-5 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <div>
-                  <CarouselWrapper images={event.image} height='80'/>
-                </div>
-                <p className="mt-4 text-green-500 font-bold text-2xl">{event.title}</p>
-                <p className="text-md mt-2 line-clamp-2 w-full text-md text-zinc-500">{event.description}</p>
-                <div className="flex gap-4">
-                  <p className="flex text-md items-center gap-2 mt-3 text-sm">
-                    <Calendar className="text-green-500" size={18} /> {event.date}
-                  </p>
-                  <p className="flex text-md items-center gap-2 mt-3 text-sm">
-                    <MdLocationOn className="text-red-500 text-xl" /> {event.location}
-                  </p>
-                </div>
-                <a href={`/acara/${event.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
-                  Lihat Detail <IoIosArrowForward />
-                </a>
+              <p className="mt-4 text-green-500 font-bold text-2xl">{event.title}</p>
+              <p className="text-md mt-2 line-clamp-2 w-full text-md text-zinc-500">{event.description}</p>
+              <div className="flex gap-4">
+                <p className="flex text-md items-center gap-2 mt-3 text-sm">
+                  <Calendar className="text-green-500" size={18} /> {event.date}
+                </p>
+                <p className="flex text-md items-center gap-2 mt-3 text-sm">
+                  <MdLocationOn className="text-red-500 text-xl" /> {event.location}
+                </p>
               </div>
-            ))}
+              <a href={`/acara/${event.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
+                Lihat Detail <IoIosArrowForward />
+              </a>
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full flex flex-col items-center text-center py-20">
+            <p className="text-lg  mt-4">Belum ada acara yang tersedia</p>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
-                {i + 1}
-              </PaginationLink>
+      {events.length > 0 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
             </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }

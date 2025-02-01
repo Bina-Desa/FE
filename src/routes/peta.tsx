@@ -74,16 +74,18 @@ export default function PetaTempatWisata() {
         <MapContainer center={defaultPosition} zoom={15} style={{ height: '100vh', width: '100%', zIndex: 1 }}>
           <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
 
-          {tempatWisata?.map((tempat: any, index: number) => (
-            <Marker
-              key={index}
-              position={[parseFloat(tempat.lokasi.lat), parseFloat(tempat.lokasi.long)]}
-              icon={redIcon}
-              eventHandlers={{
-                click: () => handleMarkerClick(tempat),
-              }}
-            ></Marker>
-          ))}
+          {tempatWisata
+            ?.filter((tempat: any) => tempat.lokasi.lat && tempat.lokasi.long) // Hanya ambil data yang punya koordinat
+            .map((tempat: any, index: number) => (
+              <Marker
+                key={index}
+                position={[parseFloat(tempat.lokasi.lat), parseFloat(tempat.lokasi.long)]}
+                icon={redIcon}
+                eventHandlers={{
+                  click: () => handleMarkerClick(tempat),
+                }}
+              ></Marker>
+            ))}
         </MapContainer>
 
         <Drawer open={drawerOpen} onOpenChange={setDrawerOpen}>
@@ -94,7 +96,7 @@ export default function PetaTempatWisata() {
                 <ScrollArea className="h-[30rem] lg:h-max lg:pb-14 max-w-4xl mt-6 rounded-md px-4 lg:flex-col lg:w-full">
                   <div className="lg:flex lg:gap-8 lg:items-center">
                     <div className="w-full">
-                      <CarouselWrapper images={selectedTempat?.image || []} height='80'/>
+                      <CarouselWrapper images={selectedTempat?.image || []} height="80" />
                     </div>
                     <div className="w-full">
                       <div className="flex flex-col gap-2 mt-4">

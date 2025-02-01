@@ -43,53 +43,61 @@ export default function Kuliner() {
       </div>
 
       <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-        {isLoading
-          ? [1, 2, 3].map((_i, index) => (
-              <div key={index} className="p-3 pb-5 rounded-md animate-pulse">
-                <div className="h-72 bg-slate-200 rounded-md"></div>
-                <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
-                <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
-                <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+        {isLoading ? (
+          [1, 2, 3].map((_i, index) => (
+            <div key={index} className="p-3 pb-5 rounded-md animate-pulse">
+              <div className="h-72 bg-slate-200 rounded-md"></div>
+              <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
+              <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
+              <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+            </div>
+          ))
+        ) : products.length > 0 ? (
+          products.map((product: any) => (
+            <div key={product.id} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+              <div>
+                <CarouselWrapper images={product.image} height="80" />
               </div>
-            ))
-          : products.map((product: any) => (
-              <div key={product.id} className="bg-white p-3 shadow-md rounded-md hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                <div>
-                  <CarouselWrapper images={product.image} height='80'/>
-                </div>
-                <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
-                <p className="font-bold">Rp. {product.price}</p>
-                <p className="text-md mt-2">{product.description}</p>
-                <div className="mt-3 flex items-center gap-4">
-                  <p className="flex text-md items-center gap-2">
-                    <BsShop className="text-green-500" /> {product.warung.name}
-                  </p>
-                  <p className="flex text-md items-center gap-2">
-                    <MdLocationOn className="text-red-500" /> {product.warung.address}
-                  </p>
-                </div>
+              <p className="mt-4 text-green-500 font-bold text-2xl">{product.name}</p>
+              <p className="font-bold">Rp. {product.price}</p>
+              <p className="text-md mt-2">{product.description}</p>
+              <div className="mt-3 flex items-center gap-4">
+                <p className="flex text-md items-center gap-2">
+                  <BsShop className="text-green-500" /> {product.warung.name}
+                </p>
+                <p className="flex text-md items-center gap-2">
+                  <MdLocationOn className="text-red-500" /> {product.warung.address}
+                </p>
               </div>
-            ))}
+            </div>
+          ))
+        ) : (
+          <div className="col-span-full flex flex-col items-center text-center py-20">
+            <p className="text-lg  mt-4">Belum ada kuliner yang tersedia</p>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
-      <Pagination>
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
-          </PaginationItem>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <PaginationItem key={i}>
-              <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
-                {i + 1}
-              </PaginationLink>
+      {products.length > 0 && (
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
             </PaginationItem>
-          ))}
-          <PaginationItem>
-            <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
+            {Array.from({ length: totalPages }, (_, i) => (
+              <PaginationItem key={i}>
+                <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
+                  {i + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
     </div>
   );
 }

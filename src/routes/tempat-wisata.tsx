@@ -56,46 +56,54 @@ export default function TempatWisata() {
 
       <div>
         <div className="grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4 my-10 max-w-6xl mx-auto px-4">
-          {isLoading
-            ? [1, 2, 3].map((_i, index) => (
-                <div key={index} className="p-3 bg-white pb-5 rounded-md animate-pulse">
-                  <div className="h-72 bg-slate-200 rounded-md"></div>
-                  <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
-                  <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
-                  <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+          {isLoading ? (
+            [1, 2, 3].map((_i, index) => (
+              <div key={index} className="p-3 bg-white pb-5 rounded-md animate-pulse">
+                <div className="h-72 bg-slate-200 rounded-md"></div>
+                <div className="h-4 bg-slate-200 w-1/2 mt-4"></div>
+                <div className="h-4 bg-slate-200 w-1/3 mt-2"></div>
+                <div className="h-4 bg-slate-200 w-1/4 mt-2"></div>
+              </div>
+            ))
+          ) : wisata?.length > 0 ? (
+            wisata?.map((wisata: WisataAlam) => (
+              <a href={`tempat-wisata/${wisata.id}`} key={wisata.id} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
+                <CarouselWrapper images={wisata.image} height="80" />
+                <div>
+                  <p className="font-bold text-lg mt-4">{wisata.nama}</p>
+                  <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
+                  <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
+                    Lihat Detail <ChevronRight size={'14'} />
+                  </a>
                 </div>
-              ))
-            : wisata?.map((wisata: WisataAlam) => (
-                <a href={`tempat-wisata/${wisata.id}`} key={wisata.id} className="bg-white shadow-md rounded-md p-3 pb-6 relative hover:ring-green-500 hover:ring-2 transition-all duration-300 cursor-pointer">
-                  <CarouselWrapper images={wisata.image} height='80'/>
-                  <div>
-                    <p className="font-bold text-lg mt-4">{wisata.nama}</p>
-                    <p className="text-sm text-zinc-500 mb-4">{wisata.deskripsiPendek}</p>
-                    <a href={`tempat-wisata/${wisata.id}`} className="bg-green-500 px-4 py-2 rounded-md text-white mt-4 text-sm hover:bg-green-600 flex items-center w-max gap-1" rel="noopener noreferrer">
-                      Lihat Detail <ChevronRight size={'14'} />
-                    </a>
-                  </div>
-                </a>
-              ))}
+              </a>
+            ))
+          ) : (
+            <div className="col-span-full flex flex-col items-center text-center py-20">
+              <p className="text-lg  mt-4">Belum ada tempat wisata yang tersedia</p>
+            </div>
+          )}
         </div>
 
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, i) => (
-              <PaginationItem key={i}>
-                <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
-                  {i + 1}
-                </PaginationLink>
+        {wisata?.length > 0 && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious className="cursor-pointer hover:bg-green-500 hover:text-white" onClick={() => currentPage > 1 && setCurrentPage(currentPage - 1)} />
               </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              {Array.from({ length: totalPages }, (_, i) => (
+                <PaginationItem key={i}>
+                  <PaginationLink onClick={() => setCurrentPage(i + 1)} className={currentPage === i + 1 ? 'bg-green-500 text-white' : 'cursor-pointer hover:bg-green-500 hover:text-white'}>
+                    {i + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)} className="cursor-pointer hover:bg-green-500 hover:text-white" />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </div>
   );
