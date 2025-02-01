@@ -77,7 +77,7 @@ export default function HeroVideoDialog({ animationStyle = 'from-center', videoS
       {' '}
       {/* Apply heightStyle */}
       <div className="group relative cursor-pointer" onClick={() => setIsVideoOpen(true)}>
-        <img src={thumbnailSrc} alt={thumbnailAlt} width={1920} height={1080} className="w-full rounded-md border shadow-lg transition-all duration-200 ease-out group-hover:brightness-[0.8]" />
+        <img src={thumbnailSrc} alt={thumbnailAlt} width={1920} height={1080} className="w-full rounded-md border shadow-lg transition-all duration-200 ease-out group-hover:brightness-[0.8] h-[500px] object-cover" />
         <div className="absolute inset-0 flex scale-[0.9] items-center justify-center rounded-2xl transition-all duration-200 ease-out group-hover:scale-100">
           <div className="flex size-28 items-center justify-center rounded-full bg-primary/10 backdrop-blur-md">
             <div className={`relative flex size-20 scale-100 items-center justify-center rounded-full bg-gradient-to-b from-green-500 to-green-600 shadow-md transition-all duration-200 ease-out group-hover:scale-[1.2]`}>
@@ -104,7 +104,7 @@ export default function HeroVideoDialog({ animationStyle = 'from-center', videoS
                   className="size-full rounded-2xl"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  style={heightStyle} // Apply heightStyle here as well
+                  style={heightStyle}
                 ></iframe>
               </div>
             </motion.div>

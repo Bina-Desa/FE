@@ -66,7 +66,7 @@ export default function BerandaSection() {
       <HeroSection />
 
       {/* Wisata Section */}
-      <div className="max-w-7xl mx-auto px-4 mt-[35rem] max-md:mt-[20rem]">
+      <div className="max-w-7xl mx-auto px-4 mt-[35rem]">
         <div className="text-center">
           <h1 className="text-4xl font-bold">
             Tempat <span className="text-green-500">Wisata</span>
