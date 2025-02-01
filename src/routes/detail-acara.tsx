@@ -39,28 +39,30 @@ export default function DetailWisata() {
         <title>Desa Wisata Kebon Ayu | Detail Wisata</title>
       </Helmet>
 
-      <div>
-        <CarouselWrapper images={images} height="[30rem]" />
-      </div>
-
-      <div className="mt-10">
-        <h1 className="font-bold text-2xl">{title}</h1>
-
-        <div className="flex gap-6 mt-4 text-sm">
-          <p className="flex items-center gap-2 text-base">
-            <span className="font-semibold text-red-500">
-              <IoLocation />
-            </span>
-            {location}
-          </p>
-          <p className="flex items-center gap-2 text-base">
-            <span className="font-semibold text-green-500">
-              <MdOutlineEvent />
-            </span>
-            {date}
-          </p>
+      <div className="bg-white p-4 rounded-md">
+        <div>
+          <CarouselWrapper images={images} height="[30rem]" />
         </div>
-        <p className="mt-6 leading-relaxed whitespace-pre-wrap">{description}</p>
+
+        <div className="mt-10">
+          <h1 className="font-bold text-2xl">{title}</h1>
+
+          <div className="flex gap-6 mt-4 text-sm">
+            <p className="flex items-center gap-2 text-base">
+              <span className="font-semibold text-red-500">
+                <IoLocation />
+              </span>
+              {location}
+            </p>
+            <p className="flex items-center gap-2 text-base">
+              <span className="font-semibold text-green-500">
+                <MdOutlineEvent />
+              </span>
+              {date}
+            </p>
+          </div>
+          <p className="mt-6 leading-relaxed whitespace-pre-wrap">{description}</p>
+        </div>
       </div>
     </div>
   );

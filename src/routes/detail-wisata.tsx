@@ -43,6 +43,7 @@ export default function DetailWisata() {
         <title>Desa Wisata Kebon Ayu | Detail Wisata</title>
       </Helmet>
 
+      <div className='bg-white p-4 rounded-md shadow-sm'>
       <div className="">
         <CarouselWrapper images={wisata?.image} height="[30rem]" />
       </div>
@@ -66,6 +67,7 @@ export default function DetailWisata() {
             </p>
           ))}
         </div>
+      </div>
       </div>
     </div>
   );
