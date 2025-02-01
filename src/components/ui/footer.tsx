@@ -14,7 +14,7 @@ export default function Footer() {
             <div className="mt-4">
               <p className="text-xl font-bold">Form Kritk dan Saran</p>
               <p className="text-sm mt-2 mb-6">Lengkapi form berikut untuk mengirimkan kritik dan saran</p>
-              <form action="mailto:kebonayu@gmail.com" method="post" encType="text/plain">
+              <form action="mailto:kebonayudev@gmail.com" method="post" encType="text/plain">
                 <div className="flex flex-col gap-2">
                   <label htmlFor="name">Nama</label>
                   <Input placeholder="Nama anda" className="w-full text-black" required name="name" />
