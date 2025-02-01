@@ -58,8 +58,8 @@ const HeroSection = () => {
 
       <motion.div
         ref={videoRef}
-        className="bg-white p-2 max-w-6xl h-max mx-auto max-lg:mx-4 shadow-md right-0 left-0 rounded-md mt-10 absolute"
-        style={{ top: 'calc(100vh - 90px)', height: '520px' }}
+        className="bg-white p-2 max-w-6xl h-[520px] mx-auto max-lg:mx-4 shadow-md right-0 left-0 rounded-md mt-10 absolute max-md:h-[300px]"
+        style={{ top: 'calc(100vh - 90px)' }}
         initial={{ opacity: 0 }}
         animate={isInView ? { opacity: 1 } : {}}
         transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -73,8 +73,8 @@ const HeroSection = () => {
           allowFullScreen
         ></iframe> */}
 
-        <div className='relative border-red-500'>
-          <HeroVideoDialog videoSrc="https://www.youtube.com/embed/AugA9nZRgsI?si=3pedrqpClRc3w9vZ" thumbnailSrc="/images/thumbniel.jpg" className="h-[500px]" />
+        <div className="relative border-red-500">
+          <HeroVideoDialog videoSrc="https://www.youtube.com/embed/AugA9nZRgsI?si=3pedrqpClRc3w9vZ" thumbnailSrc="/images/thumbniel.jpg" />
         </div>
       </motion.div>
     </div>
