@@ -51,6 +51,22 @@ export default function UpdateWisata() {
     formState: { errors },
   } = useForm<Wisata>();
 
+  const handleDragEnd = (e: L.LeafletEvent) => {
+    const marker = e.target as L.Marker;
+    const { lat, lng } = marker.getLatLng();
+    setLocationInfo({
+      latitude: lat,
+      longitude: lng,
+      label: `Lat: ${lat.toFixed(5)}, Lng: ${lng.toFixed(5)}`,
+    });
+  };
+
+  useEffect(() => {
+    if (locationInfo) {
+      console.log('Updated Location:', locationInfo);
+    }
+  }, [locationInfo]);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -295,7 +311,7 @@ export default function UpdateWisata() {
                   Lokasi
                 </label>
                 <Input placeholder="Masukan link google maps" className="mt-2" {...register('gmaps')} />
-                <MapContainer center={mapCenter} zoom={3} style={{ height: '225px', width: '100%', borderRadius: '10px', marginTop: '10px' }}>
+                {/* <MapContainer center={mapCenter} zoom={3} style={{ height: '225px', width: '100%', borderRadius: '10px', marginTop: '10px' }}>
                   <SearchControl setLocationInfo={setLocationInfo} />
                   <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
                   {locationInfo && (
@@ -303,7 +319,25 @@ export default function UpdateWisata() {
                       <Popup>{locationInfo.label}</Popup>
                     </Marker>
                   )}
+                </MapContainer> */}
+                <MapContainer
+                  center={mapCenter}
+                  zoom={3}
+                  style={{
+                    height: '225px',
+                    width: '100%',
+                    borderRadius: '10px',
+                    marginTop: '10px',
+                  }}
+                >
+                  <SearchControl setLocationInfo={setLocationInfo} />
+                  <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' />
+                  {locationInfo && (
+                    <Marker key={`${locationInfo.latitude}-${locationInfo.longitude}`} position={[locationInfo.latitude, locationInfo.longitude]} draggable={true} eventHandlers={{ dragend: handleDragEnd }}>
+                    </Marker>
+                  )}
                 </MapContainer>
+                <p className='text-xs  mt-3'>*anda dapat memindahkan penanda jika lokasi tidak tersedia</p>
               </div>
             </div>
           </div>
