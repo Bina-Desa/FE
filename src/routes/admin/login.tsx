@@ -13,6 +13,7 @@ const LoginPage: React.FC = () => {
   const { register, handleSubmit } = useForm<LoginFormInputs>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin: SubmitHandler<LoginFormInputs> = async (data) => {
@@ -51,7 +52,7 @@ const LoginPage: React.FC = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-white">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg border">
+      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-lg border mx-4">
         {/* Logo */}
         <div className="flex justify-center mb-6">
           <img src="/images/logo.jpeg" alt="App Logo" className="w-20 h-20 rounded-full" />
@@ -71,7 +72,7 @@ const LoginPage: React.FC = () => {
             <input
               id="username"
               type="text"
-              placeholder="Enter your username"
+              placeholder="Masukan username"
               {...register('username', { required: true })}
               className="w-full px-4 py-2 mt-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
@@ -84,11 +85,15 @@ const LoginPage: React.FC = () => {
             </label>
             <input
               id="password"
-              type="password"
-              placeholder="Enter your password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="Masukan password"
               {...register('password', { required: true })}
               className="w-full px-4 py-2 mt-2 text-gray-800 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
             />
+          </div>
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="showpassword" onClick={() => setShowPassword(!showPassword)} />
+            <label htmlFor="showpassword">Tampilkan Password</label>
           </div>
 
           {/* Error Message */}
@@ -99,7 +104,7 @@ const LoginPage: React.FC = () => {
 
           {/* Sign In Button */}
           <button type="submit" className="w-full px-4 py-2 mt-6 font-medium text-white bg-green-500 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500" disabled={loading}>
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? 'Login...' : 'Login'}
           </button>
         </form>
       </div>
